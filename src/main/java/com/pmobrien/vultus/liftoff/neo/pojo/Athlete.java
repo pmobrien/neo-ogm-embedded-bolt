@@ -3,7 +3,7 @@ package com.pmobrien.vultus.liftoff.neo.pojo;
 import org.neo4j.ogm.annotation.NodeEntity;
 
 @NodeEntity
-public class ScoreNode extends NeoEntity {
+public class Athlete extends NeoEntity {
 
   public enum Gender {
     MALE,
@@ -28,7 +28,7 @@ public class ScoreNode extends NeoEntity {
     return username;
   }
 
-  public ScoreNode setUsername(String username) {
+  public Athlete setUsername(String username) {
     this.username = username;
     return this;
   }
@@ -37,7 +37,7 @@ public class ScoreNode extends NeoEntity {
     return weight;
   }
 
-  public ScoreNode setWeight(Long weight) {
+  public Athlete setWeight(Long weight) {
     this.weight = weight;
     return this;
   }
@@ -46,7 +46,7 @@ public class ScoreNode extends NeoEntity {
     return gender;
   }
 
-  public ScoreNode setGender(Gender gender) {
+  public Athlete setGender(Gender gender) {
     this.gender = gender;
     return this;
   }
@@ -55,7 +55,7 @@ public class ScoreNode extends NeoEntity {
     return ageGroup;
   }
 
-  public ScoreNode setAgeGroup(AgeGroup ageGroup) {
+  public Athlete setAgeGroup(AgeGroup ageGroup) {
     this.ageGroup = ageGroup;
     return this;
   }
@@ -64,7 +64,7 @@ public class ScoreNode extends NeoEntity {
     return snatch;
   }
 
-  public ScoreNode setSnatch(Long snatch) {
+  public Athlete setSnatch(Long snatch) {
     this.snatch = snatch;
     return this;
   }
@@ -73,7 +73,7 @@ public class ScoreNode extends NeoEntity {
     return cleanAndJerk;
   }
 
-  public ScoreNode setCleanAndJerk(Long cleanAndJerk) {
+  public Athlete setCleanAndJerk(Long cleanAndJerk) {
     this.cleanAndJerk = cleanAndJerk;
     return this;
   }
@@ -82,7 +82,7 @@ public class ScoreNode extends NeoEntity {
     return metcon;
   }
 
-  public ScoreNode setMetcon(Long metcon) {
+  public Athlete setMetcon(Long metcon) {
     this.metcon = metcon;
     return this;
   }

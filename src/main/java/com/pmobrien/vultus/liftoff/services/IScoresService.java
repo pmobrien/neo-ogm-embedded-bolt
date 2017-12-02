@@ -1,6 +1,6 @@
 package com.pmobrien.vultus.liftoff.services;
 
-import com.pmobrien.vultus.liftoff.neo.pojo.ScoreNode;
+import com.pmobrien.vultus.liftoff.neo.pojo.Athlete;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -16,12 +16,12 @@ public interface IScoresService {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public Response getScores(
-      @QueryParam("ageGroup") ScoreNode.AgeGroup ageGroup,
-      @QueryParam("gender") ScoreNode.Gender gender
+      @QueryParam("ageGroup") Athlete.AgeGroup ageGroup,
+      @QueryParam("gender") Athlete.Gender gender
   );
   
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response addScore(ScoreNode score);
+  public Response addScore(Athlete athlete);
 }

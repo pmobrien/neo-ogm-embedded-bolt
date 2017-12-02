@@ -1,7 +1,7 @@
 package com.pmobrien.vultus.liftoff.accessors;
 
 import com.pmobrien.vultus.liftoff.neo.Sessions;
-import com.pmobrien.vultus.liftoff.neo.pojo.ScoreNode;
+import com.pmobrien.vultus.liftoff.neo.pojo.Athlete;
 import com.pmobrien.vultus.liftoff.services.pojo.CalculatedScore;
 import java.util.Collection;
 import java.util.Optional;
@@ -13,7 +13,7 @@ import org.neo4j.ogm.cypher.Filters;
 
 public class ScoresAccessor {
 
-  public Collection<CalculatedScore> getScores(ScoreNode.AgeGroup ageGroup, ScoreNode.Gender gender) {
+  public Collection<CalculatedScore> getScores(Athlete.AgeGroup ageGroup, Athlete.Gender gender) {
     Filters filters = new Filters();
     
     if(ageGroup != null) {
@@ -30,57 +30,59 @@ public class ScoresAccessor {
       filters.add(filter);
     }
     
-    return Sessions.returningSessionOperation(session -> session.loadAll(ScoreNode.class, filters))
+    return Sessions.returningSessionOperation(session -> session.loadAll(Athlete.class, filters))
         .stream()
-        .map(score -> Calculator.convert(score))
+        .map(athlete -> Calculator.getScore(athlete))
         .collect(Collectors.toList());
   }
   
-  public ScoreNode addScore(ScoreNode score) {
+  public Athlete addScore(Athlete athlete) {
     return Sessions.returningSessionOperation(session -> {
-      ScoreNode scoreByUsername =
-          session.loadAll(ScoreNode.class, new Filter("username", ComparisonOperator.EQUALS, score.getUsername()))
+      Athlete athleteByUsername =
+          session.loadAll(Athlete.class, new Filter("username", ComparisonOperator.EQUALS, athlete.getUsername()))
               .stream()
               .findFirst()
               .orElse(null);
       
-      if(scoreByUsername == null) {
-        session.save(score);
+      if(athleteByUsername == null) {
+        session.save(athlete);
         
-        return session.load(ScoreNode.class, score.getId());
+        return session.load(Athlete.class, athlete.getId());
       } else {
         session.save(
-            scoreByUsername
-                .setWeight(Optional.ofNullable(score.getWeight()).orElse(scoreByUsername.getWeight()))
-                .setGender(Optional.ofNullable(score.getGender()).orElse(scoreByUsername.getGender()))
-                .setAgeGroup(Optional.ofNullable(score.getAgeGroup()).orElse(scoreByUsername.getAgeGroup()))
-                .setSnatch(Optional.ofNullable(score.getSnatch()).orElse(scoreByUsername.getSnatch()))
-                .setCleanAndJerk(Optional.ofNullable(score.getCleanAndJerk()).orElse(scoreByUsername.getCleanAndJerk()))
-                .setMetcon(Optional.ofNullable(score.getMetcon()).orElse(scoreByUsername.getMetcon()))
+            athleteByUsername
+                .setWeight(Optional.ofNullable(athlete.getWeight()).orElse(athleteByUsername.getWeight()))
+                .setGender(Optional.ofNullable(athlete.getGender()).orElse(athleteByUsername.getGender()))
+                .setAgeGroup(Optional.ofNullable(athlete.getAgeGroup()).orElse(athleteByUsername.getAgeGroup()))
+                .setSnatch(Optional.ofNullable(athlete.getSnatch()).orElse(athleteByUsername.getSnatch()))
+                .setCleanAndJerk(
+                    Optional.ofNullable(athlete.getCleanAndJerk()).orElse(athleteByUsername.getCleanAndJerk())
+                )
+                .setMetcon(Optional.ofNullable(athlete.getMetcon()).orElse(athleteByUsername.getMetcon()))
         );
         
-        return session.load(ScoreNode.class, scoreByUsername.getId());
+        return session.load(Athlete.class, athleteByUsername.getId());
       }
     });
   }
   
   private static class Calculator {
 
-    private static CalculatedScore convert(ScoreNode score) {
+    private static CalculatedScore getScore(Athlete athlete) {
       return new CalculatedScore()
-          .setUsername(score.getUsername())
-          .setSnatch(score.getSnatch())
-          .setCleanAndJerk(score.getCleanAndJerk())
-          .setMetcon(score.getMetcon())
-          .setScore(calculate(score));
+          .setUsername(athlete.getUsername())
+          .setSnatch(athlete.getSnatch())
+          .setCleanAndJerk(athlete.getCleanAndJerk())
+          .setMetcon(athlete.getMetcon())
+          .setScore(calculate(athlete));
     }
     
-    private static Double calculate(ScoreNode score) {
-      if(score.getSnatch() == null || score.getCleanAndJerk() == null || score.getMetcon() == null) {
+    private static Double calculate(Athlete athlete) {
+      if(athlete.getSnatch() == null || athlete.getCleanAndJerk() == null || athlete.getMetcon() == null) {
         return 0.0;
       }
       
-      return (((double)score.getSnatch() + (double)score.getCleanAndJerk() + (double)score.getMetcon()) / 3.0) / (double)score.getWeight();
+      return (((double)athlete.getSnatch() + (double)athlete.getCleanAndJerk() + (double)athlete.getMetcon()) / 3.0) / (double)athlete.getWeight();
     }
   }
 }
