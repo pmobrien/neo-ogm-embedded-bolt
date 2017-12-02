@@ -8,6 +8,11 @@ import javax.ws.rs.core.Response;
 public class ScoresService implements IScoresService {
 
   @Override
+  public Response getScores() {
+    return Response.ok(new ScoresAccessor().getScores()).build();
+  }
+  
+  @Override
   public Response addScore(ScoreNode score) {
     return Response.ok(new ScoresAccessor().addScore(score)).build();
   }

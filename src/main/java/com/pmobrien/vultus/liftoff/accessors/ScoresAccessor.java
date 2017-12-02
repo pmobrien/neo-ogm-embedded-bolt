@@ -2,12 +2,17 @@ package com.pmobrien.vultus.liftoff.accessors;
 
 import com.pmobrien.vultus.liftoff.neo.Sessions;
 import com.pmobrien.vultus.liftoff.neo.pojo.ScoreNode;
+import java.util.Collection;
 import java.util.Optional;
 import org.neo4j.ogm.cypher.ComparisonOperator;
 import org.neo4j.ogm.cypher.Filter;
 
 public class ScoresAccessor {
 
+  public Collection<ScoreNode> getScores() {
+    return Sessions.returningSessionOperation(session -> session.loadAll(ScoreNode.class));
+  }
+  
   public ScoreNode addScore(ScoreNode score) {
     return Sessions.returningSessionOperation(session -> {
       ScoreNode scoreByUsername =
