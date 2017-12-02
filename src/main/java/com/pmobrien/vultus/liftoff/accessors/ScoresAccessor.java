@@ -8,11 +8,18 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import org.neo4j.ogm.cypher.ComparisonOperator;
 import org.neo4j.ogm.cypher.Filter;
+import org.neo4j.ogm.cypher.Filters;
 
 public class ScoresAccessor {
 
-  public Collection<CalculatedScore> getScores() {
-    return Sessions.returningSessionOperation(session -> session.loadAll(ScoreNode.class))
+  public Collection<CalculatedScore> getScores(ScoreNode.AgeGroup ageGroup) {
+    Filters filters = new Filters();
+    
+    if(ageGroup != null) {
+      filters.add(new Filter("ageGroup", ComparisonOperator.EQUALS, ageGroup));
+    }
+    
+    return Sessions.returningSessionOperation(session -> session.loadAll(ScoreNode.class, filters))
         .stream()
         .map(score -> Calculator.convert(score))
         .collect(Collectors.toList());
