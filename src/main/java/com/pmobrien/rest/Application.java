@@ -10,6 +10,9 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
 
 public class Application {
+  
+  private static final String PORT = "port";
+  private static final String DEFAULT_PORT = "8080";
 
   public static void main(String[] args) throws Exception {
     Server server = new Server(port());
@@ -38,6 +41,6 @@ public class Application {
   }
   
   private static int port() {
-    return Integer.parseInt(Optional.ofNullable(System.getProperty("port")).orElse("8080"));
+    return Integer.parseInt(Optional.ofNullable(System.getProperty(PORT)).orElse(DEFAULT_PORT));
   }
 }
