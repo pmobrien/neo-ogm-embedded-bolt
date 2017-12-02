@@ -25,6 +25,7 @@ public class ScoresAccessor {
             scoreByUsername
                 .setWeight(Optional.ofNullable(score.getWeight()).orElse(scoreByUsername.getWeight()))
                 .setGender(Optional.ofNullable(score.getGender()).orElse(scoreByUsername.getGender()))
+                .setAgeGroup(Optional.ofNullable(score.getAgeGroup()).orElse(scoreByUsername.getAgeGroup()))
                 .setSnatch(Optional.ofNullable(score.getSnatch()).orElse(scoreByUsername.getSnatch()))
                 .setCleanAndJerk(Optional.ofNullable(score.getCleanAndJerk()).orElse(scoreByUsername.getCleanAndJerk()))
                 .setMetcon(Optional.ofNullable(score.getMetcon()).orElse(scoreByUsername.getMetcon()))

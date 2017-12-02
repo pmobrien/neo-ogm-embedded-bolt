@@ -10,9 +10,16 @@ public class ScoreNode extends NeoEntity {
     FEMALE;
   }
   
+  public enum AgeGroup {
+    GROUP_0_39,
+    GROUP_40_54,
+    GROUP_55_PLUS;
+  }
+  
   private String username;
   private Long weight;
   private Gender gender;
+  private AgeGroup ageGroup;
   private Long snatch;
   private Long cleanAndJerk;
   private Long metcon;
@@ -41,6 +48,15 @@ public class ScoreNode extends NeoEntity {
 
   public ScoreNode setGender(Gender gender) {
     this.gender = gender;
+    return this;
+  }
+
+  public AgeGroup getAgeGroup() {
+    return ageGroup;
+  }
+
+  public ScoreNode setAgeGroup(AgeGroup ageGroup) {
+    this.ageGroup = ageGroup;
     return this;
   }
 
