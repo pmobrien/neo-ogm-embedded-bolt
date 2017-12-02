@@ -6,17 +6,28 @@ import com.pmobrien.vultus.liftoff.services.pojo.CalculatedScore;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.neo4j.ogm.cypher.BooleanOperator;
 import org.neo4j.ogm.cypher.ComparisonOperator;
 import org.neo4j.ogm.cypher.Filter;
 import org.neo4j.ogm.cypher.Filters;
 
 public class ScoresAccessor {
 
-  public Collection<CalculatedScore> getScores(ScoreNode.AgeGroup ageGroup) {
+  public Collection<CalculatedScore> getScores(ScoreNode.AgeGroup ageGroup, ScoreNode.Gender gender) {
     Filters filters = new Filters();
     
     if(ageGroup != null) {
       filters.add(new Filter("ageGroup", ComparisonOperator.EQUALS, ageGroup));
+    }
+    
+    if(gender != null) {
+      Filter filter = new Filter("gender", ComparisonOperator.EQUALS, gender);
+      
+      if(ageGroup != null) {
+        filter.setBooleanOperator(BooleanOperator.AND);
+      }
+      
+      filters.add(filter);
     }
     
     return Sessions.returningSessionOperation(session -> session.loadAll(ScoreNode.class, filters))

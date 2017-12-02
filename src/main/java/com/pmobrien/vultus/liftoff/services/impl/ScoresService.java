@@ -8,8 +8,8 @@ import javax.ws.rs.core.Response;
 public class ScoresService implements IScoresService {
 
   @Override
-  public Response getScores(ScoreNode.AgeGroup ageGroup) {
-    return Response.ok(new ScoresAccessor().getScores(ageGroup)).build();
+  public Response getScores(ScoreNode.AgeGroup ageGroup, ScoreNode.Gender gender) {
+    return Response.ok(new ScoresAccessor().getScores(ageGroup, gender)).build();
   }
   
   @Override

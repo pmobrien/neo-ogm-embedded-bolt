@@ -15,7 +15,10 @@ public interface IScoresService {
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getScores(@QueryParam("ageGroup") ScoreNode.AgeGroup ageGroup);
+  public Response getScores(
+      @QueryParam("ageGroup") ScoreNode.AgeGroup ageGroup,
+      @QueryParam("gender") ScoreNode.Gender gender
+  );
   
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
