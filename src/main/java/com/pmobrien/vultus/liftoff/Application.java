@@ -4,6 +4,7 @@ import com.pobrien.vultus.liftoff.filters.RequestLoggerFilter;
 import com.pmobrien.vultus.liftoff.mappers.DefaultObjectMapper;
 import com.pmobrien.vultus.liftoff.mappers.UncaughtExceptionMapper;
 import com.pmobrien.vultus.liftoff.services.impl.HelloWorldService;
+import com.pmobrien.vultus.liftoff.services.impl.ScoresService;
 import java.util.Optional;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -23,6 +24,7 @@ public class Application {
         new ServletHolder(
             new ServletContainer(
                 new ResourceConfig()
+                    .register(ScoresService.class)
                     .register(HelloWorldService.class)
                     .register(DefaultObjectMapper.class)
                     .register(RequestLoggerFilter.class)
