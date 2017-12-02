@@ -1,13 +1,13 @@
 package com.pmobrien.vultus.liftoff.services.pojo;
 
-import com.pmobrien.vultus.liftoff.neo.pojo.Score;
+import com.pmobrien.vultus.liftoff.neo.pojo.ScoreNode;
 
 public class AddScoreRequest {
 
   private String firstName;
   private String lastName;
   private Long weight;
-  private Score.Gender gender;
+  private ScoreNode.Gender gender;
   private Long snatch;
   private Long cleanAndJerk;
   private Long metcon;
@@ -36,11 +36,11 @@ public class AddScoreRequest {
     this.weight = weight;
   }
 
-  public Score.Gender getGender() {
+  public ScoreNode.Gender getGender() {
     return gender;
   }
 
-  public void setGender(Score.Gender gender) {
+  public void setGender(ScoreNode.Gender gender) {
     this.gender = gender;
   }
 
@@ -68,8 +68,8 @@ public class AddScoreRequest {
     this.metcon = metcon;
   }
   
-  public Score toScore() {
-    return new Score.Builder()
+  public ScoreNode toScoreNode() {
+    return new ScoreNode.Builder()
         .username(firstName + lastName)
         .weight(weight)
         .gender(gender)

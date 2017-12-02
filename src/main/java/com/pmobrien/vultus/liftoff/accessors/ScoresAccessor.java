@@ -1,17 +1,17 @@
 package com.pmobrien.vultus.liftoff.accessors;
 
 import com.pmobrien.vultus.liftoff.neo.Sessions;
-import com.pmobrien.vultus.liftoff.neo.pojo.Score;
+import com.pmobrien.vultus.liftoff.neo.pojo.ScoreNode;
 import com.pmobrien.vultus.liftoff.services.pojo.AddScoreRequest;
 
 public class ScoresAccessor {
 
-  public Score addScore(AddScoreRequest addScoreRequest) {
+  public ScoreNode addScore(AddScoreRequest addScoreRequest) {
     return Sessions.returningSessionOperation(session -> {
-      Score score = addScoreRequest.toScore();
+      ScoreNode score = addScoreRequest.toScoreNode();
       session.save(score);
       
-      return session.load(Score.class, score.getId());
+      return session.load(ScoreNode.class, score.getId());
     });
   }
 }

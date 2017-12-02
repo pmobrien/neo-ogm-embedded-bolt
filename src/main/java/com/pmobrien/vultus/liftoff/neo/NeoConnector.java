@@ -2,7 +2,7 @@ package com.pmobrien.vultus.liftoff.neo;
 
 import com.google.common.base.Strings;
 import com.google.common.base.Suppliers;
-import com.pmobrien.vultus.liftoff.neo.pojo.Score;
+import com.pmobrien.vultus.liftoff.neo.pojo.ScoreNode;
 import java.nio.file.Paths;
 import java.util.function.Supplier;
 import org.neo4j.ogm.config.Configuration;
@@ -50,7 +50,7 @@ public class NeoConnector {
         Paths.get(Paths.get("").toAbsolutePath().toString(), "target", "neo-store").toString()
     );
     
-    Sessions.returningSessionOperation(session -> session.loadAll(Score.class))
+    Sessions.returningSessionOperation(session -> session.loadAll(ScoreNode.class))
         .stream()
         .forEach(score -> System.out.println(score.toJson()));
   }

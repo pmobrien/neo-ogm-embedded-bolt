@@ -3,7 +3,7 @@ package com.pmobrien.vultus.liftoff.neo.pojo;
 import org.neo4j.ogm.annotation.NodeEntity;
 
 @NodeEntity
-public class Score extends NeoEntity {
+public class ScoreNode extends NeoEntity {
 
   public enum Gender {
     MALE,
@@ -67,7 +67,7 @@ public class Score extends NeoEntity {
   
   public static class Builder {
 
-    private final Score score = new Score();
+    private final ScoreNode score = new ScoreNode();
     
     public Builder username(String username) {
       score.username = username;
@@ -99,7 +99,7 @@ public class Score extends NeoEntity {
       return this;
     }
     
-    public Score build() {
+    public ScoreNode build() {
       return score;
     }
   }
