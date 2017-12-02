@@ -2,15 +2,20 @@ package com.pmobrien.vultus.liftoff.accessors;
 
 import com.pmobrien.vultus.liftoff.neo.Sessions;
 import com.pmobrien.vultus.liftoff.neo.pojo.ScoreNode;
+import com.pmobrien.vultus.liftoff.services.pojo.CalculatedScore;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.neo4j.ogm.cypher.ComparisonOperator;
 import org.neo4j.ogm.cypher.Filter;
 
 public class ScoresAccessor {
 
-  public Collection<ScoreNode> getScores() {
-    return Sessions.returningSessionOperation(session -> session.loadAll(ScoreNode.class));
+  public Collection<CalculatedScore> getScores() {
+    return Sessions.returningSessionOperation(session -> session.loadAll(ScoreNode.class))
+        .stream()
+        .map(score -> Calculator.convert(score))
+        .collect(Collectors.toList());
   }
   
   public ScoreNode addScore(ScoreNode score) {
@@ -39,5 +44,25 @@ public class ScoresAccessor {
         return session.load(ScoreNode.class, scoreByUsername.getId());
       }
     });
+  }
+  
+  private static class Calculator {
+
+    private static CalculatedScore convert(ScoreNode score) {
+      return new CalculatedScore()
+          .setUsername(score.getUsername())
+          .setSnatch(score.getSnatch())
+          .setCleanAndJerk(score.getCleanAndJerk())
+          .setMetcon(score.getMetcon())
+          .setScore(calculate(score));
+    }
+    
+    private static Double calculate(ScoreNode score) {
+      if(score.getSnatch() == null || score.getCleanAndJerk() == null || score.getMetcon() == null) {
+        return 0.0;
+      }
+      
+      return (((double)score.getSnatch() + (double)score.getCleanAndJerk() + (double)score.getMetcon()) / 3.0) / (double)score.getWeight();
+    }
   }
 }
