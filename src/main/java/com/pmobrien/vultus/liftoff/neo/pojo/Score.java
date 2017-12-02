@@ -1,4 +1,4 @@
-package com.pmobrien.vultus.liftoff.pojo;
+package com.pmobrien.vultus.liftoff.neo.pojo;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
