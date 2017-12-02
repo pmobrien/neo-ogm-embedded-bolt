@@ -67,4 +67,15 @@ public class AddScoreRequest {
   public void setMetcon(Long metcon) {
     this.metcon = metcon;
   }
+  
+  public Score toScore() {
+    return new Score.Builder()
+        .username(firstName + lastName)
+        .weight(weight)
+        .gender(gender)
+        .snatch(snatch)
+        .cleanAndJerk(cleanAndJerk)
+        .metcon(metcon)
+        .build();
+  }
 }

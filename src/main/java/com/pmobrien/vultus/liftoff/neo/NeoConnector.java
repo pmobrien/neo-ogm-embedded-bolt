@@ -50,16 +50,8 @@ public class NeoConnector {
         Paths.get(Paths.get("").toAbsolutePath().toString(), "target", "neo-store").toString()
     );
     
-    Score score = new Score.Builder()
-          .username("patrick")
-          .build();
-    
-    Sessions.sessionOperation(session -> {
-      session.save(score);
-    });
-    
-    System.out.println(
-        Sessions.returningSessionOperation(session -> session.load(Score.class, score.getId())).toJson()
-    );
+    Sessions.returningSessionOperation(session -> session.loadAll(Score.class))
+        .stream()
+        .forEach(score -> System.out.println(score.toJson()));
   }
 }
