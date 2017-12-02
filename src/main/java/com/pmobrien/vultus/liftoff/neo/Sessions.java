@@ -1,4 +1,4 @@
-package com.pmobrien.rest.neo;
+package com.pmobrien.vultus.liftoff.neo;
 
 import java.util.function.Consumer;
 import java.util.function.Function;

@@ -1,4 +1,4 @@
-package com.pmobrien.rest.services;
+package com.pmobrien.vultus.liftoff.services;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

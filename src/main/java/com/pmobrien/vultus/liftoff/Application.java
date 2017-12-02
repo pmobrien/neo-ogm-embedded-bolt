@@ -1,7 +1,9 @@
-package com.pmobrien.rest;
+package com.pmobrien.vultus.liftoff;
 
-import com.pmobrien.rest.exceptions.UncaughtExceptionMapper;
-import com.pmobrien.rest.services.impl.HelloWorldService;
+import com.pobrien.vultus.liftoff.filters.RequestLoggerFilter;
+import com.pmobrien.vultus.liftoff.mappers.DefaultObjectMapper;
+import com.pmobrien.vultus.liftoff.mappers.UncaughtExceptionMapper;
+import com.pmobrien.vultus.liftoff.services.impl.HelloWorldService;
 import java.util.Optional;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;

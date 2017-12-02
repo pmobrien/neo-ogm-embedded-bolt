@@ -127,7 +127,7 @@
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <manifestEntries>
-                                        <Main-Class>com.pmobrien.rest.Application</Main-Class>
+                                        <Main-Class>com.pmobrien.vultus.liftoff.Application</Main-Class>
                                     </manifestEntries>
                                 </transformer>
                             </transformers>

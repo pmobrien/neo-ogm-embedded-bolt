@@ -1,6 +1,6 @@
-package com.pmobrien.rest.services.impl;
+package com.pmobrien.vultus.liftoff.services.impl;
 
-import com.pmobrien.rest.services.IHelloWorldService;
+import com.pmobrien.vultus.liftoff.services.IHelloWorldService;
 import javax.ws.rs.core.Response;
 
 public class HelloWorldService implements IHelloWorldService {

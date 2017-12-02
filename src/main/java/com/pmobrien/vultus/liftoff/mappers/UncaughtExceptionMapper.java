@@ -1,4 +1,4 @@
-package com.pmobrien.rest.exceptions;
+package com.pmobrien.vultus.liftoff.mappers;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.WebApplicationException;

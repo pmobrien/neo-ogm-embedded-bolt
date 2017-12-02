@@ -1,4 +1,4 @@
-package com.pmobrien.rest.neo;
+package com.pmobrien.vultus.liftoff.neo;
 
 import com.google.common.base.Strings;
 import com.google.common.base.Suppliers;
