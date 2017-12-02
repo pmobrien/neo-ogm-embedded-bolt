@@ -21,86 +21,53 @@ public class ScoreNode extends NeoEntity {
     return username;
   }
 
-  public void setUsername(String username) {
+  public ScoreNode setUsername(String username) {
     this.username = username;
+    return this;
   }
 
   public Long getWeight() {
     return weight;
   }
 
-  public void setWeight(Long weight) {
+  public ScoreNode setWeight(Long weight) {
     this.weight = weight;
+    return this;
   }
 
   public Gender getGender() {
     return gender;
   }
 
-  public void setGender(Gender gender) {
+  public ScoreNode setGender(Gender gender) {
     this.gender = gender;
+    return this;
   }
 
   public Long getSnatch() {
     return snatch;
   }
 
-  public void setSnatch(Long snatch) {
+  public ScoreNode setSnatch(Long snatch) {
     this.snatch = snatch;
+    return this;
   }
 
   public Long getCleanAndJerk() {
     return cleanAndJerk;
   }
 
-  public void setCleanAndJerk(Long cleanAndJerk) {
+  public ScoreNode setCleanAndJerk(Long cleanAndJerk) {
     this.cleanAndJerk = cleanAndJerk;
+    return this;
   }
 
   public Long getMetcon() {
     return metcon;
   }
 
-  public void setMetcon(Long metcon) {
+  public ScoreNode setMetcon(Long metcon) {
     this.metcon = metcon;
-  }
-  
-  public static class Builder {
-
-    private final ScoreNode score = new ScoreNode();
-    
-    public Builder username(String username) {
-      score.username = username;
-      return this;
-    }
-    
-    public Builder weight(Long weight) {
-      score.weight = weight;
-      return this;
-    }
-    
-    public Builder gender(Gender gender) {
-      score.gender = gender;
-      return this;
-    }
-    
-    public Builder snatch(Long snatch) {
-      score.snatch = snatch;
-      return this;
-    }
-    
-    public Builder cleanAndJerk(Long cleanAndJerk) {
-      score.cleanAndJerk = cleanAndJerk;
-      return this;
-    }
-    
-    public Builder metcon(Long metcon) {
-      score.metcon = metcon;
-      return this;
-    }
-    
-    public ScoreNode build() {
-      return score;
-    }
+    return this;
   }
 }
