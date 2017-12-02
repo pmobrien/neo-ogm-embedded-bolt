@@ -19,6 +19,8 @@ public class Application {
             new ServletContainer(
                 new ResourceConfig()
                     .register(HelloWorldService.class)
+                    .register(DefaultObjectMapper.class)
+                    .register(RequestLoggerFilter.class)
                     .register(UncaughtExceptionMapper.class)
             )
         ),
