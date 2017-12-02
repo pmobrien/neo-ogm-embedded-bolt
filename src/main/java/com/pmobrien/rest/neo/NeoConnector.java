@@ -2,8 +2,6 @@ package com.pmobrien.rest.neo;
 
 import com.google.common.base.Strings;
 import com.google.common.base.Suppliers;
-import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Supplier;
 import org.neo4j.ogm.config.Configuration;
 import org.neo4j.ogm.drivers.embedded.driver.EmbeddedDriver;
@@ -24,19 +22,8 @@ public class NeoConnector {
     return INSTANCE;
   }
   
-  public void sessionOperation(Consumer<Session> function) {
-    Session session = SESSION_FACTORY.get().openSession();
-    function.accept(session);
-    session.clear();
-  }
-  
-  public <T> T returningSessionOperation(Function<Session, T> function) {
-    Session session = SESSION_FACTORY.get().openSession();
-    T result = function.apply(session);
-    
-    session.clear();
-    
-    return result;
+  protected Session newSession() {
+    return SESSION_FACTORY.get().openSession();
   }
   
   private static SessionFactory initializeSessionFactory() {
