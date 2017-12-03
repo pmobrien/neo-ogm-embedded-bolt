@@ -21,11 +21,26 @@ $(document).ready(function() {
       zeroRecords: ''
     },
     columns: [
-      { data: 'username' },
-      { data: 'snatch' },
-      { data: 'cleanAndJerk' },
-      { data: 'metcon' },
-      { data: 'score' }
+      {
+        width: '25%',
+        data: 'username'
+      },
+      {
+        width: '16%',
+        data: 'snatch'
+      },
+      {
+        width: '17%',
+        data: 'cleanAndJerk'
+      },
+      {
+        width: '16%',
+        data: 'metcon'
+      },
+      {
+        width: '25%',
+        data: 'score'
+      }
     ]
   });
   
