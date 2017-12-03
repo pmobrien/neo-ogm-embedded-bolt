@@ -1,4 +1,4 @@
-function get() {
+function getScores() {
   $.getJSON('/api/scores', null, function(json) {
     table.fnClearTable();
 
@@ -12,10 +12,14 @@ function get() {
 }
 
 $(document).ready(function() {
-  window.table = $('#scores_table').dataTable({
+  table = $('#scores_table').dataTable({
     paging: false,
     searching: false,
     info: false,
+    language: {
+      emptyTable: '',
+      zeroRecords: ''
+    },
     columns: [
       { data: 'username' },
       { data: 'snatch' },
@@ -24,4 +28,6 @@ $(document).ready(function() {
       { data: 'score' }
     ]
   });
+  
+  getScores();
 });
