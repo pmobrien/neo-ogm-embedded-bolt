@@ -1,14 +1,33 @@
-function getScores() {
-  $.getJSON('/api/scores', null, function(json) {
-    table.fnClearTable();
+var divisions = [
+  {},
+  { gender: 'MALE' },
+  { gender: 'MALE', ageGroup: 'GROUP_0_39' },
+  { gender: 'MALE', ageGroup: 'GROUP_40_54' },
+  { gender: 'MALE', ageGroup: 'GROUP_55_PLUS' },
+  { gender: 'FEMALE' },
+  { gender: 'FEMALE', ageGroup: 'GROUP_0_39' },
+  { gender: 'FEMALE', ageGroup: 'GROUP_40_54' },
+  { gender: 'FEMALE', ageGroup: 'GROUP_55_PLUS' }
+];
 
-    for(var i = 0; i < json.length; ++i) {
-      table.oApi._fnAddData(table.fnSettings(), json[i]);
-    }
-    
-    table.fnDraw();
-    table.fnSort([[4, 'desc']]);
-  });
+function getScores(gender, ageGroup) {
+  $.getJSON(
+      '/api/scores',
+      {
+        gender: gender,
+        ageGroup: ageGroup
+      },
+      function(json) {
+        table.fnClearTable();
+
+        for(var i = 0; i < json.length; ++i) {
+          table.oApi._fnAddData(table.fnSettings(), json[i]);
+        }
+
+        table.fnDraw();
+        table.fnSort([[4, 'desc']]);
+      }
+  );
 }
 
 $(document).ready(function() {
@@ -45,6 +64,10 @@ $(document).ready(function() {
   });
   
   $('#division_selector').selectpicker();
+  
+  $('#division_selector').on('changed.bs.select', function(event, index) {
+    getScores(divisions[index].gender, divisions[index].ageGroup);
+  });
   
   getScores();
 });
