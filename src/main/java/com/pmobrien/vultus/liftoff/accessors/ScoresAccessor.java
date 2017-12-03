@@ -3,6 +3,7 @@ package com.pmobrien.vultus.liftoff.accessors;
 import com.pmobrien.vultus.liftoff.neo.Sessions;
 import com.pmobrien.vultus.liftoff.neo.pojo.Athlete;
 import com.pmobrien.vultus.liftoff.services.pojo.CalculatedScore;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Optional;
@@ -84,7 +85,29 @@ public class ScoresAccessor {
         return 0.0;
       }
       
-      return (((double)athlete.getSnatch() + (double)athlete.getCleanAndJerk() + (double)athlete.getMetcon()) / 3.0) / (double)athlete.getWeight();
+      return new BigDecimal(sinclair(athlete.getSnatch() + athlete.getCleanAndJerk(), athlete.getWeight(), athlete.getGender()) + (double)athlete.getMetcon())
+          .setScale(2, BigDecimal.ROUND_HALF_EVEN)
+          .doubleValue();
+    }
+    
+    // https://en.wikipedia.org/wiki/Sinclair_Coefficients
+    private static Double sinclair(double total, double weight, Athlete.Gender gender) {
+      return total * Math.pow(10.0, Sinclair.getA(gender) * Math.pow(Math.log10(weight / Sinclair.getb(gender)), 2));
+    }
+    
+    private static class Sinclair {
+      
+      private static Double getA(Athlete.Gender gender) {
+        return Athlete.Gender.MALE.equals(gender)
+            ? 0.794358141
+            : 0.897260740;
+      }
+      
+      private static Double getb(Athlete.Gender gender) {
+        return Athlete.Gender.MALE.equals(gender)
+            ? 383.6646
+            : 325.6572;
+      }
     }
   }
 }
