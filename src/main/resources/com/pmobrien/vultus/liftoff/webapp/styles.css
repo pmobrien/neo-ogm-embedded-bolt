@@ -1,3 +1,7 @@
 .clicker {
   cursor: pointer;
 }
+
+.main-container {
+  width: 75%;
+}
