@@ -44,5 +44,7 @@ $(document).ready(function() {
     ]
   });
   
+  $('#division_selector').selectpicker();
+  
   getScores();
 });
