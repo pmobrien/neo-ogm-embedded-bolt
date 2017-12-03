@@ -4,6 +4,7 @@ import com.pmobrien.vultus.liftoff.neo.Sessions;
 import com.pmobrien.vultus.liftoff.neo.pojo.Athlete;
 import com.pmobrien.vultus.liftoff.services.pojo.CalculatedScore;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.neo4j.ogm.cypher.BooleanOperator;
@@ -33,6 +34,7 @@ public class ScoresAccessor {
     return Sessions.returningSessionOperation(session -> session.loadAll(Athlete.class, filters))
         .stream()
         .map(athlete -> Calculator.getScore(athlete))
+        .sorted(Comparator.<CalculatedScore>comparingDouble(score -> score.getScore()).reversed())
         .collect(Collectors.toList());
   }
   

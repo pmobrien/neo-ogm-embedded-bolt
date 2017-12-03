@@ -17,15 +17,19 @@ function getScores(gender, ageGroup) {
         gender: gender,
         ageGroup: ageGroup
       },
-      function(json) {
+      function(data) {
         table.fnClearTable();
 
-        for(var i = 0; i < json.length; ++i) {
-          table.oApi._fnAddData(table.fnSettings(), json[i]);
+        for(var i = 0; i < data.length; ++i) {
+          // Data always comes back sorted by top score first.
+          // Using that to inject rank here.
+          data[i].rank = i + 1;
+          
+          table.oApi._fnAddData(table.fnSettings(), data[i]);
         }
 
         table.fnDraw();
-        table.fnSort([[4, 'desc']]);
+        table.fnSort([[0, 'asc']]);
       }
   );
 }
@@ -41,23 +45,27 @@ $(document).ready(function() {
     },
     columns: [
       {
-        width: '25%',
+        width: '10%',
+        data: 'rank'
+      },
+      {
+        width: '30%',
         data: 'username'
       },
       {
-        width: '16%',
+        width: '10%',
         data: 'snatch'
       },
       {
-        width: '17%',
+        width: '10%',
         data: 'cleanAndJerk'
       },
       {
-        width: '16%',
+        width: '10%',
         data: 'metcon'
       },
       {
-        width: '25%',
+        width: '20%',
         data: 'score'
       }
     ]
