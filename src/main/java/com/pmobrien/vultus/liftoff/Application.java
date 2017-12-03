@@ -26,7 +26,7 @@ public class Application {
   private static final String WEBAPP_RESOURCE_PATH = "/com/pmobrien/vultus/liftoff/webapp";
   private static final String INDEX_HTML = String.format("%s/index.html", WEBAPP_RESOURCE_PATH);
 
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     try {
       new Application().run(new Server(port()));
     } catch(Throwable t) {
