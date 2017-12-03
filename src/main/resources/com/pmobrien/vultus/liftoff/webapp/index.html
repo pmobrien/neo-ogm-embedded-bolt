@@ -7,12 +7,30 @@
   
   <link rel="stylesheet" href="./styles.css">
   <link rel="stylesheet" href="https://bootswatch.com/4/flatly/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css">
   
-  <script src="./script.js"></script>
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="./script.js"></script>
+  <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
 </head>
 
 <body>
   <button class="btn btn-primary clicker" onclick="get()">GET</button>
+  
+  <table id="scores_table" class="display">
+    <thead>
+      <tr>
+          <th>Name</th>
+          <th>Snatch</th>
+          <th>Clean and Jerk</th>
+          <th>Metcon</th>
+          <th>Score</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
 </body>
 </html>
