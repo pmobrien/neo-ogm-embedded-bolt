@@ -69,11 +69,11 @@
             <div class="row">
               <div class="col-md-5">
                 <label class="pull-left">First name:</label>
-                <input type="text" class="form-control">
+                <input type="text" class="form-control" id="first-name-input">
               </div>
               <div class="col-md-5">
                 <label class="pull-left">Last name:</label>
-                <input type="text" class="form-control">
+                <input type="text" class="form-control" id="last-name-input">
               </div>
               <div class="col-md-2">
                 <label class="pull-left">Gender (M/F):</label>
@@ -124,7 +124,11 @@
           </div>
           
           <div class="row">
-            <button type="submit" id="submit" class="btn btn-default">Submit</button>
+            <button type="button" id="submit" class="btn btn-default" onclick="onScoreSubmit()">Submit</button>
+          </div>
+          
+          <div class="row">
+            <div id="error-message" class="submit-message"></div>
           </div>
         </form>
       </div>

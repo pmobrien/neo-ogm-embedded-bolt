@@ -10,6 +10,14 @@
   width: 75%;
 }
 
+.error-message {
+  color: red;
+}
+
+.success-message {
+  color: green;
+}
+
 /* Hide the spinner in the number fields. */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {

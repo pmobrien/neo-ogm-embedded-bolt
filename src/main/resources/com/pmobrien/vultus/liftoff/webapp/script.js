@@ -61,6 +61,23 @@ function onKeyDownGender() {
   }
 }
 
+function onScoreSubmit() {
+  console.log('in onScoreSubmit');
+  
+  if(!$('#first-name-input').val() || !$('#last-name-input').val()) {
+    $('#error-message').addClass('error-message');
+    $('#error-message').html('First and last name are required.');
+    
+    return;
+  }
+  
+  // TODO: move to success callback
+  $('#error-message').addClass('success-message');
+  $('#error-message').html('Submission successful.');
+  
+  getScores();
+}
+
 $(document).ready(function() {
   table = $('#scores-table').dataTable({
     paging: false,
