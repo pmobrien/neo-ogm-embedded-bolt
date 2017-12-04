@@ -4,10 +4,13 @@ import com.pmobrien.vultus.liftoff.exceptions.ValidationException;
 import com.pmobrien.vultus.liftoff.neo.Sessions;
 import com.pmobrien.vultus.liftoff.neo.pojo.Athlete;
 import com.pmobrien.vultus.liftoff.services.pojo.CalculatedScore;
-import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.neo4j.ogm.cypher.BooleanOperator;
 import org.neo4j.ogm.cypher.ComparisonOperator;
@@ -85,22 +88,38 @@ public class ScoresAccessor {
   private static class Calculator {
 
     private static CalculatedScore getScore(Athlete athlete) {
+      double score;
+      double sinclair;
+      
+      if(athlete.getSnatch() == null || athlete.getCleanAndJerk() == null || athlete.getMetcon() == null) {
+        score = 0.0;
+        sinclair = 0.0;
+      } else {
+        DecimalFormat formatter = new DecimalFormat("##.##");
+        
+        try {
+          sinclair = (double)formatter.parse(
+              formatter.format(
+                  sinclair(athlete.getSnatch() + athlete.getCleanAndJerk(), athlete.getWeight(), athlete.getGender())
+              )
+          );
+          
+          score = (double)formatter.parse(formatter.format(sinclair + (double)athlete.getMetcon()));
+        } catch(ParseException ex) {
+          score = 0.0;
+          sinclair = 0.0;
+          ex.printStackTrace(System.out);
+        }
+      }
+      
       return new CalculatedScore()
           .setUsername(athlete.getUsername())
           .setSnatch(athlete.getSnatch())
           .setCleanAndJerk(athlete.getCleanAndJerk())
+          .setLiftTotal(athlete.getSnatch() + athlete.getCleanAndJerk())
+          .setSinclair(sinclair)
           .setMetcon(athlete.getMetcon())
-          .setScore(calculate(athlete));
-    }
-    
-    private static Double calculate(Athlete athlete) {
-      if(athlete.getSnatch() == null || athlete.getCleanAndJerk() == null || athlete.getMetcon() == null) {
-        return 0.0;
-      }
-      
-      return new BigDecimal(sinclair(athlete.getSnatch() + athlete.getCleanAndJerk(), athlete.getWeight(), athlete.getGender()) + (double)athlete.getMetcon())
-          .setScale(2, BigDecimal.ROUND_HALF_EVEN)
-          .doubleValue();
+          .setScore(score);
     }
     
     // https://en.wikipedia.org/wiki/Sinclair_Coefficients

@@ -157,27 +157,27 @@ $(document).ready(function() {
     },
     columns: [
       {
-        width: '10%',
         data: 'rank'
       },
       {
-        width: '30%',
         data: 'username'
       },
       {
-        width: '10%',
         data: 'snatch'
       },
       {
-        width: '10%',
         data: 'cleanAndJerk'
       },
       {
-        width: '10%',
+        data: 'liftTotal'
+      },
+      {
+        data: 'sinclair'
+      },
+      {
         data: 'metcon'
       },
       {
-        width: '20%',
         data: 'score'
       }
     ]

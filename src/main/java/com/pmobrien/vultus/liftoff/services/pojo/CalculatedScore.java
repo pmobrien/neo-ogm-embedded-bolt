@@ -5,6 +5,8 @@ public class CalculatedScore {
   private String username;
   private Long snatch;
   private Long cleanAndJerk;
+  private Long liftTotal;
+  private Double sinclair;
   private Long metcon;
   private Double score;
 
@@ -32,6 +34,24 @@ public class CalculatedScore {
 
   public CalculatedScore setCleanAndJerk(Long cleanAndJerk) {
     this.cleanAndJerk = cleanAndJerk;
+    return this;
+  }
+
+  public Long getLiftTotal() {
+    return liftTotal;
+  }
+
+  public CalculatedScore setLiftTotal(Long liftTotal) {
+    this.liftTotal = liftTotal;
+    return this;
+  }
+
+  public Double getSinclair() {
+    return sinclair;
+  }
+
+  public CalculatedScore setSinclair(Double sinclair) {
+    this.sinclair = sinclair;
     return this;
   }
 
