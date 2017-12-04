@@ -112,11 +112,11 @@ public class ScoresAccessor {
       
       return new CalculatedScore()
           .setUsername(athlete.getUsername())
-          .setSnatch(athlete.getSnatch())
-          .setCleanAndJerk(athlete.getCleanAndJerk())
-          .setLiftTotal(athlete.getSnatch() + athlete.getCleanAndJerk())
+          .setSnatch(Optional.ofNullable(athlete.getSnatch()).orElse(0L))
+          .setCleanAndJerk(Optional.ofNullable(athlete.getCleanAndJerk()).orElse(0L))
+          .setLiftTotal(Optional.ofNullable(athlete.getSnatch()).orElse(0L) + Optional.ofNullable(athlete.getCleanAndJerk()).orElse(0L))
           .setSinclair(sinclair)
-          .setMetcon(athlete.getMetcon())
+          .setMetcon(Optional.ofNullable(athlete.getMetcon()).orElse(0L))
           .setScore(score);
     }
     
