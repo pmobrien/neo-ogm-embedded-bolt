@@ -99,8 +99,11 @@ function onScoreSubmit() {
       $('#submit-message').addClass('success-message');
       $('#submit-message').html('Submission successful.');
 
-      clearSubmissionFields()
-      getScores();  // TODO: get filter
+      clearSubmissionFields();
+      getScores(
+          divisions[$('#division-selector').selectedIndex].gender,
+          divisions[$('#division-selector').selectedIndex].ageGroup
+      );
     },
     error: function(error) {
       $('#submit-message').addClass('error');
