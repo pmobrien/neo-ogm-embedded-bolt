@@ -1,6 +1,7 @@
 package com.pmobrien.vultus.liftoff.services;
 
 import com.pmobrien.vultus.liftoff.neo.pojo.Athlete;
+import com.pmobrien.vultus.liftoff.services.requests.AddScoreRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -23,5 +24,5 @@ public interface IScoresService {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response addScore(Athlete athlete);
+  public Response addScore(AddScoreRequest request);
 }
