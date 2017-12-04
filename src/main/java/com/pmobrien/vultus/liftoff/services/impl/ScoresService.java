@@ -1,6 +1,8 @@
 package com.pmobrien.vultus.liftoff.services.impl;
 
+import com.google.common.base.Strings;
 import com.pmobrien.vultus.liftoff.accessors.ScoresAccessor;
+import com.pmobrien.vultus.liftoff.exceptions.ValidationException;
 import com.pmobrien.vultus.liftoff.neo.pojo.Athlete;
 import com.pmobrien.vultus.liftoff.services.IScoresService;
 import com.pmobrien.vultus.liftoff.services.requests.AddScoreRequest;
@@ -15,6 +17,10 @@ public class ScoresService implements IScoresService {
   
   @Override
   public Response addScore(AddScoreRequest request) {
+    if(Strings.isNullOrEmpty(request.getFirstName()) || Strings.isNullOrEmpty(request.getLastName())) {
+      throw new ValidationException("Error: First and last name are required.");
+    }
+    
     return Response.ok(new ScoresAccessor().addScore(request.toAthlete())).build();
   }
 }
