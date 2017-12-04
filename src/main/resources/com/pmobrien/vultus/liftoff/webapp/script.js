@@ -38,6 +38,11 @@ function onKeyDownGender() {
   var e = event || window.event;
   var key = e.keyCode || e.which;
   
+  // always allow tab
+  if(key === 9) {
+    return;
+  }
+  
   // if there's already a value, only allow backspace
   if($('#gender-input').val()) {
     if(key !== 8) {
@@ -71,11 +76,48 @@ function onScoreSubmit() {
     return;
   }
   
-  // TODO: move to success callback
-  $('#error-message').addClass('success-message');
-  $('#error-message').html('Submission successful.');
+  // TODO: check for pw
   
-  getScores();
+  var data = {
+    firstName: $('#first-name-input').val(),
+    lastName: $('#last-name-input').val(),
+    gender: getGenderFromInput(),
+    weight: $('#weight-input').val(),
+    age: $('#age-input').val(),
+    snatch: $('#snatch-input').val(),
+    cleanAndJerk: $('#clean-and-jerk-input').val(),
+    metcon: $('#metcon-input').val()
+  };
+  
+  $.ajax({
+    url: '/api/scores',
+    type: 'POST',
+    data: JSON.stringify(data),
+    contentType: 'application/json',
+    dataType: 'json',
+    success: function() {
+      // TODO: clear fields
+      
+      $('#submit-message').addClass('success-message');
+      $('#submit-message').html('Submission successful.');
+
+      getScores();  // TODO: get filter
+    },
+    error: function(error) {
+      $('#submit-message').addClass('error');
+      $('#submit-message').html(error);
+    }
+  });
+}
+
+function getGenderFromInput() {
+  if(!$('#gender-input').val()) {
+    return null;
+  }
+  
+  return $('#gender-input').val() === 'M'
+    ? 'MALE'
+    : 'FEMALE';
 }
 
 $(document).ready(function() {

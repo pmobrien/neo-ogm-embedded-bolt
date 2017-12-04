@@ -79,7 +79,7 @@ public class AddScoreRequest {
   
   public Athlete toAthlete() {
     return new Athlete()
-        .setUsername(String.format("%s %s", firstName, lastName))
+        .setUsername(String.format("%s %s", firstName.trim(), lastName.trim()))
         .setWeight(weight)
         .setGender(gender)
         .setAgeGroup(ageToAgeGroup(age))
