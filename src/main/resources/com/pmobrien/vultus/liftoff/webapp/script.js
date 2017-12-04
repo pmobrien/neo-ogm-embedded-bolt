@@ -68,8 +68,8 @@ function onKeyDownGender() {
 
 function onScoreSubmit() {
   if(!$('#first-name-input').val() || !$('#last-name-input').val()) {
-    $('#error-message').addClass('error-message');
-    $('#error-message').html('First and last name are required.');
+    $('#submit-message').addClass('error-message');
+    $('#submit-message').html('First and last name are required.');
     
     return;
   }
@@ -108,7 +108,7 @@ function onScoreSubmit() {
       }, 5000);
     },
     error: function(error) {
-      $('#submit-message').addClass('error');
+      $('#submit-message').addClass('error-message');
       $('#submit-message').html(error);
     }
   });
