@@ -109,7 +109,13 @@ function onScoreSubmit() {
     },
     error: function(error) {
       $('#submit-message').addClass('error-message');
-      $('#submit-message').html(error);
+      
+      if(error.status === 409) {
+        $('#submit-message').html(error.responseJSON.message);
+      } else {
+        console.log(error);
+        $('#submit-message').html('Unknown error.');
+      }
     }
   });
 }

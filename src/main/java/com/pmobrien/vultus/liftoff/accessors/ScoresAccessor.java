@@ -1,5 +1,6 @@
 package com.pmobrien.vultus.liftoff.accessors;
 
+import com.pmobrien.vultus.liftoff.exceptions.ValidationException;
 import com.pmobrien.vultus.liftoff.neo.Sessions;
 import com.pmobrien.vultus.liftoff.neo.pojo.Athlete;
 import com.pmobrien.vultus.liftoff.services.pojo.CalculatedScore;
@@ -48,6 +49,18 @@ public class ScoresAccessor {
               .orElse(null);
       
       if(athleteByUsername == null) {
+        if(athlete.getWeight() == null) {
+          throw new ValidationException("Error: You have not entered a weight yet.");
+        }
+        
+        if(athlete.getGender() == null) {
+          throw new ValidationException("Error: You have not entered a gender yet.");
+        }
+        
+        if(athlete.getAgeGroup()== null) {
+          throw new ValidationException("Error: You have not entered an age yet.");
+        }
+        
         session.save(athlete);
         
         return session.load(Athlete.class, athlete.getId());
