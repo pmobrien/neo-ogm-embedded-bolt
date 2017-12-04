@@ -35,7 +35,7 @@ function getScores(gender, ageGroup) {
 }
 
 $(document).ready(function() {
-  table = $('#scores_table').dataTable({
+  table = $('#scores-table').dataTable({
     paging: false,
     searching: false,
     info: false,
@@ -71,9 +71,9 @@ $(document).ready(function() {
     ]
   });
   
-  $('#division_selector').selectpicker();
+  $('#division-selector').selectpicker();
   
-  $('#division_selector').on('changed.bs.select', function(event, index) {
+  $('#division-selector').on('changed.bs.select', function(event, index) {
     getScores(divisions[index].gender, divisions[index].ageGroup);
   });
   

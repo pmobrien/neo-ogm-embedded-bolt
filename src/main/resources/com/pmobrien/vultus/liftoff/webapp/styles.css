@@ -5,3 +5,18 @@
 .main-container {
   width: 75%;
 }
+
+.submission-form {
+  width: 75%;
+}
+
+/* Hide the spinner in the number fields. */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
