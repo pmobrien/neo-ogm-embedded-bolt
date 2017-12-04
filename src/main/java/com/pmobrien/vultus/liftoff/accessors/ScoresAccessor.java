@@ -9,8 +9,6 @@ import java.text.ParseException;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.neo4j.ogm.cypher.BooleanOperator;
 import org.neo4j.ogm.cypher.ComparisonOperator;
