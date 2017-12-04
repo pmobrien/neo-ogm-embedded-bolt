@@ -96,11 +96,10 @@ function onScoreSubmit() {
     contentType: 'application/json',
     dataType: 'json',
     success: function() {
-      // TODO: clear fields
-      
       $('#submit-message').addClass('success-message');
       $('#submit-message').html('Submission successful.');
 
+      clearSubmissionFields()
       getScores();  // TODO: get filter
     },
     error: function(error) {
@@ -118,6 +117,17 @@ function getGenderFromInput() {
   return $('#gender-input').val() === 'M'
     ? 'MALE'
     : 'FEMALE';
+}
+
+function clearSubmissionFields() {
+  $('#first-name-input').val('');
+  $('#last-name-input').val('');
+  $('#gender-input').val('');
+  $('#weight-input').val('');
+  $('#age-input').val('');
+  $('#snatch-input').val('');
+  $('#clean-and-jerk-input').val('');
+  $('#metcon-input').val('');
 }
 
 $(document).ready(function() {
