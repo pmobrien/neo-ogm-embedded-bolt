@@ -1,5 +1,6 @@
 package com.pmobrien.vultus.liftoff.accessors;
 
+import com.google.common.base.Strings;
 import com.pmobrien.vultus.liftoff.neo.NeoConnector;
 import com.pmobrien.vultus.liftoff.neo.pojo.Athlete;
 import java.nio.file.Paths;
@@ -11,10 +12,12 @@ public class ScoresAccessorTest {
   
   @BeforeClass
   public void beforeClass() {
-    System.setProperty(
-        NeoConnector.NEO_STORE,
-        Paths.get(Paths.get("").toAbsolutePath().toString(), "target", "neo-store").toString()
-    );
+    if(Strings.isNullOrEmpty(System.getProperty(NeoConnector.NEO_STORE))) {
+      System.setProperty(
+          NeoConnector.NEO_STORE,
+          Paths.get(Paths.get("").toAbsolutePath().toString(), "target", "neo-store").toString()
+      );
+    }
     
     new ScoresAccessor().addScore(Athletes.PATRICK);
     new ScoresAccessor().addScore(Athletes.AARON);
