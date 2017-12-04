@@ -67,13 +67,17 @@
         <form>
           <div class="form-group">
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-5">
                 <label class="pull-left">First name:</label>
                 <input type="text" class="form-control">
               </div>
-              <div class="col-md-6">
+              <div class="col-md-5">
                 <label class="pull-left">Last name:</label>
                 <input type="text" class="form-control">
+              </div>
+              <div class="col-md-2">
+                <label class="pull-left">Gender (M/F):</label>
+                <input type="text" class="form-control" id="gender-input" style="text-transform:uppercase" onkeydown="onKeyDownGender()">
               </div>
             </div>
           </div>

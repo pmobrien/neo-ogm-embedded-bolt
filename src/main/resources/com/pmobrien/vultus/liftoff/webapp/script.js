@@ -34,6 +34,33 @@ function getScores(gender, ageGroup) {
   );
 }
 
+function onKeyDownGender() {
+  var e = event || window.event;
+  var key = e.keyCode || e.which;
+  
+  // if there's already a value, only allow backspace
+  if($('#gender-input').val()) {
+    if(key !== 8) {
+      if(e.preventDefault) {
+        e.preventDefault();
+      }
+
+      e.returnValue = false;
+    }
+    
+    return;
+  }
+  
+  // only allow m/f
+  if(key !== 70 && key !== 77) {
+    if(e.preventDefault) {
+      e.preventDefault();
+    }
+    
+    e.returnValue = false;
+  }
+}
+
 $(document).ready(function() {
   table = $('#scores-table').dataTable({
     paging: false,
