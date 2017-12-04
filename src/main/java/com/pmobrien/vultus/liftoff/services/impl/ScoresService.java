@@ -16,7 +16,15 @@ public class ScoresService implements IScoresService {
   }
   
   @Override
-  public Response addScore(AddScoreRequest request) {
+  public Response addScore(String password, AddScoreRequest request) {
+    if(Strings.isNullOrEmpty(password)) {
+      throw new ValidationException("Error: Password is required.");
+    }
+    
+    if(!"vultus".equals(password)) {
+      throw new ValidationException("Error: Password is incorrect.");
+    }
+    
     if(Strings.isNullOrEmpty(request.getFirstName()) || Strings.isNullOrEmpty(request.getLastName())) {
       throw new ValidationException("Error: First and last name are required.");
     }

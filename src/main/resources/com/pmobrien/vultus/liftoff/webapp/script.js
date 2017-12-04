@@ -69,12 +69,17 @@ function onKeyDownGender() {
 function onScoreSubmit() {
   if(!$('#first-name-input').val() || !$('#last-name-input').val()) {
     $('#submit-message').addClass('error-message');
-    $('#submit-message').html('First and last name are required.');
+    $('#submit-message').html('Error: First and last name are required.');
     
     return;
   }
   
-  // TODO: check for pw
+  if(!$('#password-input').val()) {
+    $('#submit-message').addClass('error-message');
+    $('#submit-message').html('Error: Password is required.');
+    
+    return;
+  }
   
   var data = {
     firstName: $('#first-name-input').val(),
@@ -88,7 +93,7 @@ function onScoreSubmit() {
   };
   
   $.ajax({
-    url: '/api/scores',
+    url: '/api/scores?' + $.param({ password: $('#password-input').val() }),
     type: 'POST',
     data: JSON.stringify(data),
     contentType: 'application/json',

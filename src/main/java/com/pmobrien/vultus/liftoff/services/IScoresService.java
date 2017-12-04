@@ -24,5 +24,8 @@ public interface IScoresService {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response addScore(AddScoreRequest request);
+  public Response addScore(
+      @QueryParam("password") String password,
+      AddScoreRequest request
+  );
 }
