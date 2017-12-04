@@ -67,8 +67,6 @@ function onKeyDownGender() {
 }
 
 function onScoreSubmit() {
-  console.log('in onScoreSubmit');
-  
   if(!$('#first-name-input').val() || !$('#last-name-input').val()) {
     $('#error-message').addClass('error-message');
     $('#error-message').html('First and last name are required.');
@@ -101,9 +99,13 @@ function onScoreSubmit() {
 
       clearSubmissionFields();
       getScores(
-          divisions[$('#division-selector').selectedIndex].gender,
-          divisions[$('#division-selector').selectedIndex].ageGroup
+          divisions[$('#division-selector').selectpicker()[0].selectedIndex].gender,
+          divisions[$('#division-selector').selectpicker()[0].selectedIndex].ageGroup
       );
+  
+      setTimeout(function() {
+        $('#submit-message').html('');
+      }, 5000);
     },
     error: function(error) {
       $('#submit-message').addClass('error');
