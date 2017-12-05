@@ -34,6 +34,19 @@ function getScores(gender, ageGroup) {
   );
 }
 
+function onKeyDownNumberInput() {
+  var e = event || window.event;
+  var key = e.keyCode || e.which;
+  
+  if(key !== 8 && key !== 0 && key !== 9 && key < 48 || key > 57) {
+    if(e.preventDefault) {
+      e.preventDefault();
+    }
+
+    e.returnValue = false;
+  }
+}
+
 function onKeyDownGender() {
   var e = event || window.event;
   var key = e.keyCode || e.which;
