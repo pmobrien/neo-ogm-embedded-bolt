@@ -144,6 +144,7 @@ function clearSubmissionFields() {
   $('#snatch-input').val('');
   $('#clean-and-jerk-input').val('');
   $('#metcon-input').val('');
+  $('#password-input').val('');
 }
 
 $(document).ready(function() {
