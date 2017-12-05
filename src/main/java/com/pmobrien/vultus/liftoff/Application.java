@@ -5,10 +5,13 @@ import com.pobrien.vultus.liftoff.filters.RequestLoggerFilter;
 import com.pmobrien.vultus.liftoff.mappers.DefaultObjectMapper;
 import com.pmobrien.vultus.liftoff.mappers.UncaughtExceptionMapper;
 import com.pmobrien.vultus.liftoff.services.impl.ScoresService;
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
 import java.util.Optional;
+import java.util.Properties;
 import org.eclipse.jetty.server.ForwardedRequestCustomizer;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.HttpConfiguration;
@@ -27,6 +30,8 @@ import org.glassfish.jersey.servlet.ServletContainer;
 
 public class Application {
   
+  private static final String PROP_FILE = "prop-file";
+  
   private static final String HTTP_PORT = "http-port";
   private static final String HTTPS_PORT = "https-port";
   private static final String DEFAULT_HTTP_PORT = "80";
@@ -40,6 +45,13 @@ public class Application {
 
   public static void main(String[] args) {
     try {
+      if(!Strings.isNullOrEmpty(System.getProperty(PROP_FILE))) {
+        Properties properties = new Properties();
+        properties.load(Files.newInputStream(new File(System.getProperty(PROP_FILE)).toPath()));
+        
+        System.getProperties().putAll(properties);
+      }
+      
       new Application().run(new Server());
     } catch(Throwable t) {
       t.printStackTrace(System.out);
@@ -61,29 +73,18 @@ public class Application {
   private void run(Server server) {
     try {
       server.setHandler(configureHandlers());
-      
-      if(useHttps()) {
-        if(Strings.isNullOrEmpty(System.getProperty(KEY_STORE_PATH))) {
-          throw new RuntimeException(String.format("'%s' property must be set to use https.", KEY_STORE_PATH));
-        }
-        
-        if(Strings.isNullOrEmpty(System.getProperty(KEY_STORE_PASSWORD))) {
-          throw new RuntimeException(String.format("'%s' property must be set to use https.", KEY_STORE_PASSWORD));
-        }
-        
-        server.addConnector(configureHttpsConnector(server));
-      }
+      server.addConnector(configureConnector(server));
       
       server.start();
       server.join();
     } catch(Exception ex) {
-      ex.printStackTrace(System.out);
+      throw new RuntimeException(ex);
     } finally {
       server.destroy();
     }
   }
   
-  private ServerConnector configureHttpsConnector(Server server) {
+  private ServerConnector configureConnector(Server server) {
     HttpConfiguration config = new HttpConfiguration();
     config.addCustomizer(new SecureRequestCustomizer());
     config.addCustomizer(new ForwardedRequestCustomizer());
@@ -93,16 +94,28 @@ public class Application {
     httpConnector.setPort(httpPort());
     server.addConnector(httpConnector);
     
-    SslContextFactory sslContextFactory = new SslContextFactory();
-    sslContextFactory.setKeyStoreType("PKCS12");
-    sslContextFactory.setKeyStorePath(System.getProperty(KEY_STORE_PATH));
-    sslContextFactory.setKeyStorePassword(System.getProperty(KEY_STORE_PASSWORD));
-    sslContextFactory.setKeyManagerPassword(System.getProperty(KEY_STORE_PASSWORD));
-    
-    ServerConnector connector = new ServerConnector(server, sslContextFactory, httpConnectionFactory);
-    connector.setPort(httpsPort());
-    
-    return connector;
+    if(useHttps()) {
+      if(Strings.isNullOrEmpty(System.getProperty(KEY_STORE_PATH))) {
+        throw new RuntimeException(String.format("'%s' property must be set to use https.", KEY_STORE_PATH));
+      }
+
+      if(Strings.isNullOrEmpty(System.getProperty(KEY_STORE_PASSWORD))) {
+        throw new RuntimeException(String.format("'%s' property must be set to use https.", KEY_STORE_PASSWORD));
+      }
+
+      SslContextFactory sslContextFactory = new SslContextFactory();
+      sslContextFactory.setKeyStoreType("PKCS12");
+      sslContextFactory.setKeyStorePath(System.getProperty(KEY_STORE_PATH));
+      sslContextFactory.setKeyStorePassword(System.getProperty(KEY_STORE_PASSWORD));
+      sslContextFactory.setKeyManagerPassword(System.getProperty(KEY_STORE_PASSWORD));
+      
+      ServerConnector connector = new ServerConnector(server, sslContextFactory, httpConnectionFactory);
+      connector.setPort(httpsPort());
+
+      return connector;
+    } else {
+      return new ServerConnector(server, httpConnectionFactory);
+    }
   }
   
   private HandlerList configureHandlers() throws MalformedURLException, URISyntaxException {
