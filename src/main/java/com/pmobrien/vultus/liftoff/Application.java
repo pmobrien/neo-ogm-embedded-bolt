@@ -6,6 +6,7 @@ import com.pmobrien.vultus.liftoff.mappers.DefaultObjectMapper;
 import com.pmobrien.vultus.liftoff.mappers.UncaughtExceptionMapper;
 import com.pmobrien.vultus.liftoff.services.impl.ScoresService;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -53,6 +54,8 @@ public class Application {
       }
       
       new Application().run(new Server());
+    } catch(IOException ex) {
+      ex.printStackTrace(System.out);
     } catch(Throwable t) {
       t.printStackTrace(System.out);
     }
