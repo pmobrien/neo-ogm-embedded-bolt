@@ -12,7 +12,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.util.Optional;
-import java.util.Properties;
 import org.eclipse.jetty.server.ForwardedRequestCustomizer;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.HttpConfiguration;
@@ -31,24 +30,14 @@ import org.glassfish.jersey.servlet.ServletContainer;
 
 public class Application {
   
-  private static final String PROP_FILE = "prop-file";
-  
-  private static final String HTTP_PORT = "http-port";
-  private static final String HTTPS_PORT = "https-port";
-  private static final String DEFAULT_HTTP_PORT = "80";
-  private static final String DEFAULT_HTTPS_PORT = "443";
-  
-  private static final String KEY_STORE_PATH = "key-store-path";
-  private static final String KEY_STORE_PASSWORD = "key-store-password";
-  
   private static final String WEBAPP_RESOURCE_PATH = "/com/pmobrien/vultus/liftoff/webapp";
   private static final String INDEX_HTML_PATH = String.format("%s/index.html", WEBAPP_RESOURCE_PATH);
 
   public static void main(String[] args) {
     try {
-      if(!Strings.isNullOrEmpty(System.getProperty(PROP_FILE))) {
-        Properties properties = new Properties();
-        properties.load(Files.newInputStream(new File(System.getProperty(PROP_FILE)).toPath()));
+      if(!Strings.isNullOrEmpty(System.getProperty(Properties.PROP_FILE))) {
+        java.util.Properties properties = new java.util.Properties();
+        properties.load(Files.newInputStream(new File(System.getProperty(Properties.PROP_FILE)).toPath()));
         
         System.getProperties().putAll(properties);
       }
@@ -62,15 +51,19 @@ public class Application {
   }
   
   private static int httpPort() {
-    return Integer.parseInt(Optional.ofNullable(System.getProperty(HTTP_PORT)).orElse(DEFAULT_HTTP_PORT));
+    return Integer.parseInt(
+        Optional.ofNullable(System.getProperty(Properties.HTTP_PORT)).orElse(Properties.DEFAULT_HTTP_PORT)
+    );
   }
   
   private static boolean useHttps() {
-    return !Strings.isNullOrEmpty(System.getProperty(HTTPS_PORT));
+    return !Strings.isNullOrEmpty(System.getProperty(Properties.HTTPS_PORT));
   }
   
   private static int httpsPort() {
-    return Integer.parseInt(Optional.ofNullable(System.getProperty(HTTPS_PORT)).orElse(DEFAULT_HTTPS_PORT));
+    return Integer.parseInt(
+        Optional.ofNullable(System.getProperty(Properties.HTTPS_PORT)).orElse(Properties.DEFAULT_HTTPS_PORT)
+    );
   }
   
   private void run(Server server) {
@@ -98,19 +91,23 @@ public class Application {
     server.addConnector(httpConnector);
     
     if(useHttps()) {
-      if(Strings.isNullOrEmpty(System.getProperty(KEY_STORE_PATH))) {
-        throw new RuntimeException(String.format("'%s' property must be set to use https.", KEY_STORE_PATH));
+      if(Strings.isNullOrEmpty(System.getProperty(Properties.KEY_STORE_PATH))) {
+        throw new RuntimeException(
+            String.format("'%s' property must be set to use https.", Properties.KEY_STORE_PATH)
+        );
       }
 
-      if(Strings.isNullOrEmpty(System.getProperty(KEY_STORE_PASSWORD))) {
-        throw new RuntimeException(String.format("'%s' property must be set to use https.", KEY_STORE_PASSWORD));
+      if(Strings.isNullOrEmpty(System.getProperty(Properties.KEY_STORE_PASSWORD))) {
+        throw new RuntimeException(
+            String.format("'%s' property must be set to use https.", Properties.KEY_STORE_PASSWORD)
+        );
       }
 
       SslContextFactory sslContextFactory = new SslContextFactory();
       sslContextFactory.setKeyStoreType("PKCS12");
-      sslContextFactory.setKeyStorePath(System.getProperty(KEY_STORE_PATH));
-      sslContextFactory.setKeyStorePassword(System.getProperty(KEY_STORE_PASSWORD));
-      sslContextFactory.setKeyManagerPassword(System.getProperty(KEY_STORE_PASSWORD));
+      sslContextFactory.setKeyStorePath(System.getProperty(Properties.KEY_STORE_PATH));
+      sslContextFactory.setKeyStorePassword(System.getProperty(Properties.KEY_STORE_PASSWORD));
+      sslContextFactory.setKeyManagerPassword(System.getProperty(Properties.KEY_STORE_PASSWORD));
       
       ServerConnector connector = new ServerConnector(server, sslContextFactory, httpConnectionFactory);
       connector.setPort(httpsPort());
@@ -160,7 +157,10 @@ public class Application {
     handler.setBaseResource(
         Resource.newResource(
             URI.create(
-                this.getClass().getResource(INDEX_HTML_PATH).toURI().toASCIIString().replaceFirst("/index.html$", "/")
+                this.getClass().getResource(INDEX_HTML_PATH)
+                    .toURI()
+                    .toASCIIString()
+                    .replaceFirst("/index.html$", "/")
             )
         )
     );
@@ -169,5 +169,27 @@ public class Application {
     handler.addServlet(DefaultServlet.class, "/");
     
     return handler;
+  }
+  
+  public static String getSubmissionPassword() {
+    return Optional.ofNullable(
+        System.getProperty(Properties.SUBMISSION_PASSWORD)
+    ).orElse(Properties.DEFAULT_SUBMISSION_PASSWORD);
+  }
+  
+  public static class Properties {
+    
+    private static final String PROP_FILE = "prop-file";
+  
+    private static final String HTTP_PORT = "http-port";
+    private static final String HTTPS_PORT = "https-port";
+    private static final String DEFAULT_HTTP_PORT = "80";
+    private static final String DEFAULT_HTTPS_PORT = "443";
+
+    private static final String KEY_STORE_PATH = "key-store-path";
+    private static final String KEY_STORE_PASSWORD = "key-store-password";
+    
+    private static final String SUBMISSION_PASSWORD = "submission-password";
+    private static final String DEFAULT_SUBMISSION_PASSWORD = "vultus";
   }
 }

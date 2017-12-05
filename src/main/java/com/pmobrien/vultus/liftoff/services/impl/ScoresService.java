@@ -1,6 +1,7 @@
 package com.pmobrien.vultus.liftoff.services.impl;
 
 import com.google.common.base.Strings;
+import com.pmobrien.vultus.liftoff.Application;
 import com.pmobrien.vultus.liftoff.accessors.ScoresAccessor;
 import com.pmobrien.vultus.liftoff.exceptions.ValidationException;
 import com.pmobrien.vultus.liftoff.neo.pojo.Athlete;
@@ -21,7 +22,7 @@ public class ScoresService implements IScoresService {
       throw new ValidationException("Error: Password is required.");
     }
     
-    if(!"vultus".equals(password)) {
+    if(!Application.getSubmissionPassword().equals(password)) {
       throw new ValidationException("Error: Password is incorrect.");
     }
     
