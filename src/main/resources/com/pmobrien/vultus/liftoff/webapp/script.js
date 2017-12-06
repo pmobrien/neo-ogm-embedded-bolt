@@ -200,7 +200,6 @@ $(document).ready(function() {
     createdRow: function(row, data, index) {
       if(data.rx === false) {
         // TODO: if not filtering
-        $(row).removeClass('odd');
         $(row).addClass('scaled-cell');
       }
     }
