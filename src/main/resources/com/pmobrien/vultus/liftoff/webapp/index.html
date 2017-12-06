@@ -80,15 +80,15 @@
           <div class="form-group">
             <div class="row">
               <div class="col-md-5">
-                <label class="pull-left">First name:</label>
+                <label for="first-name-input" class="pull-left">First name:</label>
                 <input type="text" class="form-control" id="first-name-input">
               </div>
               <div class="col-md-5">
-                <label class="pull-left">Last name:</label>
+                <label for="last-name-input" class="pull-left">Last name:</label>
                 <input type="text" class="form-control" id="last-name-input">
               </div>
               <div class="col-md-2">
-                <label class="pull-left">Gender (M/F):</label>
+                <label for=gender-input" class="pull-left">Gender (M/F):</label>
                 <input type="text" class="form-control" id="gender-input" style="text-transform:uppercase" onkeydown="onKeyDownGender()">
               </div>
             </div>
@@ -97,11 +97,11 @@
           <div class="form-group">
             <div class="row">
               <div class="col-md-6">
-                <label class="pull-left">Your weight (only you can see this):</label>
+                <label for="weight-input" class="pull-left">Your weight (only you can see this):</label>
                 <input type="number" class="form-control" id="weight-input" onkeydown="onKeyDownNumberInput()">
               </div>
               <div class="col-md-6">
-                <label class="pull-left">Age:</label>
+                <label for="age-input" class="pull-left">Age:</label>
                 <input type="number" class="form-control" id="age-input" onkeydown="onKeyDownNumberInput()">
               </div>
             </div>
@@ -110,15 +110,21 @@
           <div class="form-group">
             <div class="row">
               <div class="col-md-4">
-                <label for="snatch" class="pull-left">Snatch:</label>
+                <label for="snatch-input" class="pull-left">Snatch:</label>
                 <input type="number" class="form-control" id="snatch-input" onkeydown="onKeyDownNumberInput()">
               </div>
               <div class="col-md-4">
-                <label for="clean-and-jerk" class="pull-left">Clean and Jerk:</label>
+                <label for="clean-and-jerk-input" class="pull-left">Clean and Jerk:</label>
                 <input type="number" class="form-control" id="clean-and-jerk-input" onkeydown="onKeyDownNumberInput()">
               </div>
               <div class="col-md-4">
-                <label for="metcon" class="pull-left">Metcon:</label>
+                <label for="metcon-input" class="pull-left">Metcon:</label>
+                <div class="form-check pull-right">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" id="rx-checkbox">
+                    Rx
+                  </label>
+                </div>
                 <input type="number" class="form-control" id="metcon-input" onkeydown="onKeyDownNumberInput()">
               </div>
             </div>
@@ -128,7 +134,7 @@
             <div class="row">
               <div class="col-md-3"></div>
               <div class="col-md-6">
-                <label for="password" class="pull-left">Password:</label>
+                <label for="password-input" class="pull-left">Password:</label>
                 <input type="password" class="form-control" id="password-input">
               </div>
               <div class="col-md-3"></div>
