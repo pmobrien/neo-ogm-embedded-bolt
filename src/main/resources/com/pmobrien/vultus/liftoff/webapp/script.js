@@ -102,7 +102,8 @@ function onScoreSubmit() {
     age: $('#age-input').val(),
     snatch: $('#snatch-input').val(),
     cleanAndJerk: $('#clean-and-jerk-input').val(),
-    metcon: $('#metcon-input').val()
+    metcon: $('#metcon-input').val(),
+    rx: $('#rx-checkbox')[0].checked
   };
   
   $.ajax({
@@ -157,6 +158,7 @@ function clearSubmissionFields() {
   $('#snatch-input').val('');
   $('#clean-and-jerk-input').val('');
   $('#metcon-input').val('');
+  $("#rx-checkbox").prop("checked", true);
   $('#password-input').val('');
 }
 
@@ -194,7 +196,14 @@ $(document).ready(function() {
       {
         data: 'score'
       }
-    ]
+    ],
+    createdRow: function(row, data, index) {
+      if(data.rx === false) {
+        // TODO: if not filtering
+        $(row).removeClass('odd');
+        $(row).addClass('scaled-cell');
+      }
+    }
   });
   
   $('#division-selector').selectpicker();

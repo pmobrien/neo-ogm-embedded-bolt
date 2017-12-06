@@ -12,6 +12,7 @@ public class AddScoreRequest {
   private Long snatch;
   private Long cleanAndJerk;
   private Long metcon;
+  private Boolean rx;
 
   public String getFirstName() {
     return firstName;
@@ -76,29 +77,24 @@ public class AddScoreRequest {
   public void setMetcon(Long metcon) {
     this.metcon = metcon;
   }
+
+  public Boolean isRx() {
+    return rx;
+  }
+
+  public void setRx(Boolean rx) {
+    this.rx = rx;
+  }
   
   public Athlete toAthlete() {
     return new Athlete()
         .setUsername(String.format("%s %s", firstName.trim(), lastName.trim()))
         .setWeight(weight)
         .setGender(gender)
-        .setAgeGroup(ageToAgeGroup(age))
+        .setAgeGroup(Athlete.AgeGroup.fromAge(age))
         .setSnatch(snatch)
         .setCleanAndJerk(cleanAndJerk)
-        .setMetcon(metcon);
-  }
-  
-  private Athlete.AgeGroup ageToAgeGroup(Long age) {
-    if(age == null) {
-      return null;
-    }
-    
-    if(age < 40) {
-      return Athlete.AgeGroup.GROUP_0_39;
-    } else if(age < 55) {
-      return Athlete.AgeGroup.GROUP_40_54;
-    } else {
-      return Athlete.AgeGroup.GROUP_55_PLUS;
-    }
+        .setMetcon(metcon)
+        .setRx(rx);
   }
 }

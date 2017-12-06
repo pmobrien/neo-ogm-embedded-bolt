@@ -6,6 +6,10 @@
   width: 75%;
 }
 
+.scaled-cell {
+  background-color: lightyellow !important;
+}
+
 .submission-form {
   width: 75%;
 }

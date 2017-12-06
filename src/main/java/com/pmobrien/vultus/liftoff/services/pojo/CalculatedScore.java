@@ -8,6 +8,7 @@ public class CalculatedScore {
   private Long liftTotal;
   private Double sinclair;
   private Long metcon;
+  private Boolean rx;
   private Double score;
 
   public String getUsername() {
@@ -61,6 +62,15 @@ public class CalculatedScore {
 
   public CalculatedScore setMetcon(Long metcon) {
     this.metcon = metcon;
+    return this;
+  }
+
+  public Boolean isRx() {
+    return rx;
+  }
+
+  public CalculatedScore setRx(Boolean rx) {
+    this.rx = rx;
     return this;
   }
 

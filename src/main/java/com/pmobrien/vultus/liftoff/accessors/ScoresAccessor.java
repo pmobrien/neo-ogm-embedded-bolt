@@ -76,6 +76,7 @@ public class ScoresAccessor {
                     Optional.ofNullable(athlete.getCleanAndJerk()).orElse(athleteByUsername.getCleanAndJerk())
                 )
                 .setMetcon(Optional.ofNullable(athlete.getMetcon()).orElse(athleteByUsername.getMetcon()))
+                .setRx(Optional.ofNullable(athlete.isRx()).orElse(athleteByUsername.isRx()))
         );
         
         return session.load(Athlete.class, athleteByUsername.getId());
@@ -117,6 +118,7 @@ public class ScoresAccessor {
           .setLiftTotal(Optional.ofNullable(athlete.getSnatch()).orElse(0L) + Optional.ofNullable(athlete.getCleanAndJerk()).orElse(0L))
           .setSinclair(sinclair)
           .setMetcon(Optional.ofNullable(athlete.getMetcon()).orElse(0L))
+          .setRx(athlete.isRx())
           .setScore(score);
     }
     

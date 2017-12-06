@@ -14,6 +14,20 @@ public class Athlete extends NeoEntity {
     GROUP_0_39,
     GROUP_40_54,
     GROUP_55_PLUS;
+    
+    public static AgeGroup fromAge(Long age) {
+      if(age == null) {
+        return null;
+      }
+
+      if(age < 40) {
+        return Athlete.AgeGroup.GROUP_0_39;
+      } else if(age < 55) {
+        return Athlete.AgeGroup.GROUP_40_54;
+      } else {
+        return Athlete.AgeGroup.GROUP_55_PLUS;
+      }
+    }
   }
   
   private String username;
@@ -23,6 +37,7 @@ public class Athlete extends NeoEntity {
   private Long snatch;
   private Long cleanAndJerk;
   private Long metcon;
+  private Boolean rx = true;
 
   public String getUsername() {
     return username;
@@ -84,6 +99,15 @@ public class Athlete extends NeoEntity {
 
   public Athlete setMetcon(Long metcon) {
     this.metcon = metcon;
+    return this;
+  }
+
+  public Boolean isRx() {
+    return rx;
+  }
+
+  public Athlete setRx(Boolean rx) {
+    this.rx = rx;
     return this;
   }
 }
