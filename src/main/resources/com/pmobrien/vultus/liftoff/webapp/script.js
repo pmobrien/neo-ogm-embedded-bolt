@@ -1,3 +1,4 @@
+// object index in the array matches selection in select picker
 var divisions = [
   {},
   { gender: 'MALE' },
@@ -10,12 +11,19 @@ var divisions = [
   { gender: 'FEMALE', ageGroup: 'GROUP_55_PLUS' }
 ];
 
-function getScores(gender, ageGroup) {
+var rx = [
+  undefined,
+  true,
+  false
+];
+
+function getScores(gender, ageGroup, rx) {
   $.getJSON(
       '/api/scores',
       {
         gender: gender,
-        ageGroup: ageGroup
+        ageGroup: ageGroup,
+        rx
       },
       function(data) {
         table.fnClearTable();
@@ -119,7 +127,8 @@ function onScoreSubmit() {
       clearSubmissionFields();
       getScores(
           divisions[$('#division-selector').selectpicker()[0].selectedIndex].gender,
-          divisions[$('#division-selector').selectpicker()[0].selectedIndex].ageGroup
+          divisions[$('#division-selector').selectpicker()[0].selectedIndex].ageGroup,
+          rx[$('#rx-selector').selectpicker()[0].selectedIndex]
       );
   
       setTimeout(function() {
@@ -206,9 +215,22 @@ $(document).ready(function() {
   });
   
   $('#division-selector').selectpicker();
+  $('#rx-selector').selectpicker();
   
   $('#division-selector').on('changed.bs.select', function(event, index) {
-    getScores(divisions[index].gender, divisions[index].ageGroup);
+    getScores(
+        divisions[index].gender,
+        divisions[index].ageGroup,
+        rx[$('#rx-selector').selectpicker()[0].selectedIndex]
+    );
+  });
+  
+  $('#rx-selector').on('changed.bs.select', function(event, index) {
+    getScores(
+        divisions[$('#division-selector').selectpicker()[0].selectedIndex].gender,
+        divisions[$('#division-selector').selectpicker()[0].selectedIndex].ageGroup,
+        rx[index]
+    );
   });
   
   getScores();
