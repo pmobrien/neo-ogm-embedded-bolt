@@ -207,9 +207,11 @@ $(document).ready(function() {
       }
     ],
     createdRow: function(row, data, index) {
-      if(data.rx === false) {
-        // TODO: if not filtering
-        $(row).addClass('scaled-cell');
+      if(data && data.rx === false) {
+        // no need to color if viewing only scaled
+        if($('#rx-selector').selectpicker()[0].selectedIndex !== 2) {
+          $(row).addClass('scaled-cell');
+        }
       }
     }
   });
