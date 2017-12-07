@@ -32,24 +32,24 @@ public class AthletesAccessorTest {
   @Test
   public void test() {
     // get all
-    Assert.assertEquals(8, new AthletesAccessor().getScores(null, null).size());
+    Assert.assertEquals(8, new AthletesAccessor().getScores(null, null, null).size());
     
     // only age group filters
-    Assert.assertEquals(5, new AthletesAccessor().getScores(Athlete.AgeGroup.GROUP_0_39, null).size());
-    Assert.assertEquals(2, new AthletesAccessor().getScores(Athlete.AgeGroup.GROUP_40_54, null).size());
-    Assert.assertEquals(1, new AthletesAccessor().getScores(Athlete.AgeGroup.GROUP_55_PLUS, null).size());
+    Assert.assertEquals(5, new AthletesAccessor().getScores(Athlete.AgeGroup.GROUP_0_39, null, null).size());
+    Assert.assertEquals(2, new AthletesAccessor().getScores(Athlete.AgeGroup.GROUP_40_54, null, null).size());
+    Assert.assertEquals(1, new AthletesAccessor().getScores(Athlete.AgeGroup.GROUP_55_PLUS, null, null).size());
     
     // only gender filters
-    Assert.assertEquals(6, new AthletesAccessor().getScores(null, Athlete.Gender.MALE).size());
-    Assert.assertEquals(2, new AthletesAccessor().getScores(null, Athlete.Gender.FEMALE).size());
+    Assert.assertEquals(6, new AthletesAccessor().getScores(null, Athlete.Gender.MALE, null).size());
+    Assert.assertEquals(2, new AthletesAccessor().getScores(null, Athlete.Gender.FEMALE, null).size());
     
     // age and gender filters
-    Assert.assertEquals(5, new AthletesAccessor().getScores(Athlete.AgeGroup.GROUP_0_39, Athlete.Gender.MALE).size());
-    Assert.assertEquals(0, new AthletesAccessor().getScores(Athlete.AgeGroup.GROUP_0_39, Athlete.Gender.FEMALE).size());
-    Assert.assertEquals(0, new AthletesAccessor().getScores(Athlete.AgeGroup.GROUP_40_54, Athlete.Gender.MALE).size());
-    Assert.assertEquals(2, new AthletesAccessor().getScores(Athlete.AgeGroup.GROUP_40_54, Athlete.Gender.FEMALE).size());
-    Assert.assertEquals(1, new AthletesAccessor().getScores(Athlete.AgeGroup.GROUP_55_PLUS, Athlete.Gender.MALE).size());
-    Assert.assertEquals(0, new AthletesAccessor().getScores(Athlete.AgeGroup.GROUP_55_PLUS, Athlete.Gender.FEMALE).size());
+    Assert.assertEquals(5, new AthletesAccessor().getScores(Athlete.AgeGroup.GROUP_0_39, Athlete.Gender.MALE, null).size());
+    Assert.assertEquals(0, new AthletesAccessor().getScores(Athlete.AgeGroup.GROUP_0_39, Athlete.Gender.FEMALE, null).size());
+    Assert.assertEquals(0, new AthletesAccessor().getScores(Athlete.AgeGroup.GROUP_40_54, Athlete.Gender.MALE, null).size());
+    Assert.assertEquals(2, new AthletesAccessor().getScores(Athlete.AgeGroup.GROUP_40_54, Athlete.Gender.FEMALE, null).size());
+    Assert.assertEquals(1, new AthletesAccessor().getScores(Athlete.AgeGroup.GROUP_55_PLUS, Athlete.Gender.MALE, null).size());
+    Assert.assertEquals(0, new AthletesAccessor().getScores(Athlete.AgeGroup.GROUP_55_PLUS, Athlete.Gender.FEMALE, null).size());
   }
   
   private static class Athletes {

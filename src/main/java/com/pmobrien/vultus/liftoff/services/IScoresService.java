@@ -18,7 +18,8 @@ public interface IScoresService {
   @Produces(MediaType.APPLICATION_JSON)
   public Response getScores(
       @QueryParam("ageGroup") Athlete.AgeGroup ageGroup,
-      @QueryParam("gender") Athlete.Gender gender
+      @QueryParam("gender") Athlete.Gender gender,
+      @QueryParam("rx") Boolean rx
   );
   
   @POST

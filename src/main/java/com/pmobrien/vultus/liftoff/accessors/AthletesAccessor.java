@@ -17,7 +17,7 @@ import org.neo4j.ogm.cypher.Filters;
 
 public class AthletesAccessor {
 
-  public Collection<CalculatedScore> getScores(Athlete.AgeGroup ageGroup, Athlete.Gender gender) {
+  public Collection<CalculatedScore> getScores(Athlete.AgeGroup ageGroup, Athlete.Gender gender, Boolean rx) {
     Filters filters = new Filters();
     
     if(ageGroup != null) {
@@ -32,6 +32,17 @@ public class AthletesAccessor {
       }
       
       filters.add(filter);
+    }
+    
+    if(rx != null) {
+      if(ageGroup == null && gender == null) {
+        filters.add(new Filter("rx", ComparisonOperator.EQUALS, rx));
+      } else {
+        Filter filter = new Filter("rx", ComparisonOperator.EQUALS, rx);
+        filter.setBooleanOperator(BooleanOperator.AND);
+
+        filters.add(filter);
+      }
     }
     
     return Sessions.returningSessionOperation(session -> session.loadAll(Athlete.class, filters))

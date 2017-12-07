@@ -12,8 +12,8 @@ import javax.ws.rs.core.Response;
 public class ScoresService implements IScoresService {
 
   @Override
-  public Response getScores(Athlete.AgeGroup ageGroup, Athlete.Gender gender) {
-    return Response.ok(new AthletesAccessor().getScores(ageGroup, gender)).build();
+  public Response getScores(Athlete.AgeGroup ageGroup, Athlete.Gender gender, Boolean rx) {
+    return Response.ok(new AthletesAccessor().getScores(ageGroup, gender, rx)).build();
   }
   
   @Override
