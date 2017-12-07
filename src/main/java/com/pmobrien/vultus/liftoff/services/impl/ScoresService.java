@@ -2,7 +2,7 @@ package com.pmobrien.vultus.liftoff.services.impl;
 
 import com.google.common.base.Strings;
 import com.pmobrien.vultus.liftoff.Application;
-import com.pmobrien.vultus.liftoff.accessors.ScoresAccessor;
+import com.pmobrien.vultus.liftoff.accessors.AthletesAccessor;
 import com.pmobrien.vultus.liftoff.exceptions.ValidationException;
 import com.pmobrien.vultus.liftoff.neo.pojo.Athlete;
 import com.pmobrien.vultus.liftoff.services.IScoresService;
@@ -13,7 +13,7 @@ public class ScoresService implements IScoresService {
 
   @Override
   public Response getScores(Athlete.AgeGroup ageGroup, Athlete.Gender gender) {
-    return Response.ok(new ScoresAccessor().getScores(ageGroup, gender)).build();
+    return Response.ok(new AthletesAccessor().getScores(ageGroup, gender)).build();
   }
   
   @Override
@@ -30,6 +30,6 @@ public class ScoresService implements IScoresService {
       throw new ValidationException("Error: First and last name are required.");
     }
     
-    return Response.ok(new ScoresAccessor().addScore(request.toAthlete())).build();
+    return Response.ok(new AthletesAccessor().addScore(request.toAthlete())).build();
   }
 }

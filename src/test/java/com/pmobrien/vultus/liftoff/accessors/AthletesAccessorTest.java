@@ -8,7 +8,7 @@ import junit.framework.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class ScoresAccessorTest {
+public class AthletesAccessorTest {
   
   @BeforeClass
   public void beforeClass() {
@@ -19,36 +19,37 @@ public class ScoresAccessorTest {
       );
     }
     
-    new ScoresAccessor().addScore(Athletes.PATRICK);
-    new ScoresAccessor().addScore(Athletes.AARON);
-    new ScoresAccessor().addScore(Athletes.EDWIN);
-    new ScoresAccessor().addScore(Athletes.OLD_DUDE);
-    new ScoresAccessor().addScore(Athletes.BIG_BERTHA);
-    new ScoresAccessor().addScore(Athletes.EDWIN_SCALED);
-    new ScoresAccessor().addScore(Athletes.AARON_SCALED);
+    new AthletesAccessor().addScore(Athletes.PATRICK);
+    new AthletesAccessor().addScore(Athletes.AARON);
+    new AthletesAccessor().addScore(Athletes.EDWIN);
+    new AthletesAccessor().addScore(Athletes.OLD_DUDE);
+    new AthletesAccessor().addScore(Athletes.BIG_BERTHA);
+    new AthletesAccessor().addScore(Athletes.EDWIN_SCALED);
+    new AthletesAccessor().addScore(Athletes.AARON_SCALED);
+    new AthletesAccessor().addScore(Athletes.BIG_BERTHA_SCALED);
   }
   
   @Test
   public void test() {
     // get all
-    Assert.assertEquals(7, new ScoresAccessor().getScores(null, null).size());
+    Assert.assertEquals(8, new AthletesAccessor().getScores(null, null).size());
     
     // only age group filters
-    Assert.assertEquals(5, new ScoresAccessor().getScores(Athlete.AgeGroup.GROUP_0_39, null).size());
-    Assert.assertEquals(1, new ScoresAccessor().getScores(Athlete.AgeGroup.GROUP_40_54, null).size());
-    Assert.assertEquals(1, new ScoresAccessor().getScores(Athlete.AgeGroup.GROUP_55_PLUS, null).size());
+    Assert.assertEquals(5, new AthletesAccessor().getScores(Athlete.AgeGroup.GROUP_0_39, null).size());
+    Assert.assertEquals(2, new AthletesAccessor().getScores(Athlete.AgeGroup.GROUP_40_54, null).size());
+    Assert.assertEquals(1, new AthletesAccessor().getScores(Athlete.AgeGroup.GROUP_55_PLUS, null).size());
     
     // only gender filters
-    Assert.assertEquals(6, new ScoresAccessor().getScores(null, Athlete.Gender.MALE).size());
-    Assert.assertEquals(1, new ScoresAccessor().getScores(null, Athlete.Gender.FEMALE).size());
+    Assert.assertEquals(6, new AthletesAccessor().getScores(null, Athlete.Gender.MALE).size());
+    Assert.assertEquals(2, new AthletesAccessor().getScores(null, Athlete.Gender.FEMALE).size());
     
     // age and gender filters
-    Assert.assertEquals(5, new ScoresAccessor().getScores(Athlete.AgeGroup.GROUP_0_39, Athlete.Gender.MALE).size());
-    Assert.assertEquals(0, new ScoresAccessor().getScores(Athlete.AgeGroup.GROUP_0_39, Athlete.Gender.FEMALE).size());
-    Assert.assertEquals(0, new ScoresAccessor().getScores(Athlete.AgeGroup.GROUP_40_54, Athlete.Gender.MALE).size());
-    Assert.assertEquals(1, new ScoresAccessor().getScores(Athlete.AgeGroup.GROUP_40_54, Athlete.Gender.FEMALE).size());
-    Assert.assertEquals(1, new ScoresAccessor().getScores(Athlete.AgeGroup.GROUP_55_PLUS, Athlete.Gender.MALE).size());
-    Assert.assertEquals(0, new ScoresAccessor().getScores(Athlete.AgeGroup.GROUP_55_PLUS, Athlete.Gender.FEMALE).size());
+    Assert.assertEquals(5, new AthletesAccessor().getScores(Athlete.AgeGroup.GROUP_0_39, Athlete.Gender.MALE).size());
+    Assert.assertEquals(0, new AthletesAccessor().getScores(Athlete.AgeGroup.GROUP_0_39, Athlete.Gender.FEMALE).size());
+    Assert.assertEquals(0, new AthletesAccessor().getScores(Athlete.AgeGroup.GROUP_40_54, Athlete.Gender.MALE).size());
+    Assert.assertEquals(2, new AthletesAccessor().getScores(Athlete.AgeGroup.GROUP_40_54, Athlete.Gender.FEMALE).size());
+    Assert.assertEquals(1, new AthletesAccessor().getScores(Athlete.AgeGroup.GROUP_55_PLUS, Athlete.Gender.MALE).size());
+    Assert.assertEquals(0, new AthletesAccessor().getScores(Athlete.AgeGroup.GROUP_55_PLUS, Athlete.Gender.FEMALE).size());
   }
   
   private static class Athletes {
@@ -121,6 +122,16 @@ public class ScoresAccessorTest {
         .setSnatch(225L)
         .setCleanAndJerk(275L)
         .setMetcon(300L)
+        .setRx(false);
+    
+    private static final Athlete BIG_BERTHA_SCALED = new Athlete()
+        .setUsername("Bertha Scaled")
+        .setWeight(280L)
+        .setGender(Athlete.Gender.FEMALE)
+        .setAgeGroup(Athlete.AgeGroup.GROUP_40_54)
+        .setSnatch(275L)
+        .setCleanAndJerk(350L)
+        .setMetcon(100L)
         .setRx(false);
   }
 }

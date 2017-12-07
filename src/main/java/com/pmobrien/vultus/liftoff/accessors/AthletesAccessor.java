@@ -15,7 +15,7 @@ import org.neo4j.ogm.cypher.ComparisonOperator;
 import org.neo4j.ogm.cypher.Filter;
 import org.neo4j.ogm.cypher.Filters;
 
-public class ScoresAccessor {
+public class AthletesAccessor {
 
   public Collection<CalculatedScore> getScores(Athlete.AgeGroup ageGroup, Athlete.Gender gender) {
     Filters filters = new Filters();
