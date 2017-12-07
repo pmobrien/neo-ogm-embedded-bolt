@@ -1,5 +1,6 @@
 package com.pmobrien.vultus.liftoff.neo.pojo;
 
+import java.util.Date;
 import org.neo4j.ogm.annotation.NodeEntity;
 
 @NodeEntity
@@ -38,6 +39,8 @@ public class Athlete extends NeoEntity {
   private Long cleanAndJerk;
   private Long metcon;
   private Boolean rx = true;
+  private Date created;
+  private Date updated;
 
   public String getUsername() {
     return username;
@@ -108,6 +111,24 @@ public class Athlete extends NeoEntity {
 
   public Athlete setRx(Boolean rx) {
     this.rx = rx;
+    return this;
+  }
+
+  public Date getCreated() {
+    return created;
+  }
+
+  public Athlete setCreated(Date created) {
+    this.created = created;
+    return this;
+  }
+
+  public Date getUpdated() {
+    return updated;
+  }
+
+  public Athlete setUpdated(Date updated) {
+    this.updated = updated;
     return this;
   }
 }

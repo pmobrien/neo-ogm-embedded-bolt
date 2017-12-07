@@ -8,6 +8,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.neo4j.ogm.cypher.BooleanOperator;
@@ -73,7 +74,7 @@ public class AthletesAccessor {
           throw new ValidationException("Error: You have not entered an age yet.");
         }
         
-        session.save(athlete);
+        session.save(athlete.setUpdated(new Date()));
         
         return session.load(Athlete.class, athlete.getId());
       } else {
@@ -88,6 +89,8 @@ public class AthletesAccessor {
                 )
                 .setMetcon(Optional.ofNullable(athlete.getMetcon()).orElse(athleteByUsername.getMetcon()))
                 .setRx(Optional.ofNullable(athlete.isRx()).orElse(athleteByUsername.isRx()))
+                .setCreated(new Date())
+                .setUpdated(new Date())
         );
         
         return session.load(Athlete.class, athleteByUsername.getId());
