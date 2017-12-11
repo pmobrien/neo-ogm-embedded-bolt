@@ -104,25 +104,26 @@ public class AthletesAccessor {
       double score;
       double sinclair;
       
-      if(athlete.getSnatch() == null || athlete.getCleanAndJerk() == null || athlete.getMetcon() == null) {
-        score = 0.0;
-        sinclair = 0.0;
-      } else {
-        DecimalFormat formatter = new DecimalFormat("##.##");
-        
-        try {
+      DecimalFormat formatter = new DecimalFormat("##.##");
+      
+      try {
+        if(athlete.getSnatch() == null || athlete.getCleanAndJerk() == null) {
+          sinclair = 0.0;
+        } else {
           sinclair = (double)formatter.parse(
               formatter.format(
                   sinclair(athlete.getSnatch() + athlete.getCleanAndJerk(), athlete.getWeight(), athlete.getGender())
               )
           );
-          
-          score = (double)formatter.parse(formatter.format(sinclair + (double)athlete.getMetcon()));
-        } catch(ParseException ex) {
-          score = 0.0;
-          sinclair = 0.0;
-          ex.printStackTrace(System.out);
         }
+        
+        score = athlete.getMetcon() == null && sinclair != 0.0
+            ? 0.0
+            : (double)formatter.parse(formatter.format(sinclair + (double)athlete.getMetcon()));
+      } catch(ParseException ex) {
+        score = 0.0;
+        sinclair = 0.0;
+        ex.printStackTrace(System.out);
       }
       
       return new CalculatedScore()
