@@ -90,6 +90,7 @@ function onKeyDownGender() {
 function onScoreSubmit() {
   if(!$('#first-name-input').val() || !$('#last-name-input').val()) {
     $('#submit-message').addClass('error-message');
+    $('#submit-message').removeClass('success-message');
     $('#submit-message').html('Error: First and last name are required.');
     
     return;
@@ -97,6 +98,7 @@ function onScoreSubmit() {
   
   if(!$('#password-input').val()) {
     $('#submit-message').addClass('error-message');
+    $('#submit-message').removeClass('success-message');
     $('#submit-message').html('Error: Password is required.');
     
     return;
@@ -122,6 +124,7 @@ function onScoreSubmit() {
     dataType: 'json',
     success: function() {
       $('#submit-message').addClass('success-message');
+      $('#submit-message').removeClass('error-message');
       $('#submit-message').html('Submission successful.');
 
       clearSubmissionFields();
@@ -137,6 +140,7 @@ function onScoreSubmit() {
     },
     error: function(error) {
       $('#submit-message').addClass('error-message');
+      $('#submit-message').removeClass('success-message');
       
       if(error.status === 409) {
         $('#submit-message').html(error.responseJSON.message);
