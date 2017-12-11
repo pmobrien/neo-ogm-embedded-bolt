@@ -117,7 +117,7 @@ public class AthletesAccessor {
           );
         }
         
-        score = athlete.getMetcon() == null && sinclair != 0.0
+        score = athlete.getMetcon() == null || sinclair == 0.0
             ? 0.0
             : (double)formatter.parse(formatter.format(sinclair + (double)athlete.getMetcon()));
       } catch(ParseException ex) {
