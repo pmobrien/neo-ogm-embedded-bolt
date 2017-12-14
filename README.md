@@ -1,28 +1,16 @@
-A simple project that contains just enough code to spin up an embedded Jetty web server on port 8080, with a base resource path of `/api`.
+A simple project to demonstrate my attempt to enable bolt in embedded Neo4j using the OGM library.
 
-<br>
-
-Build the project with:
+To build and run:
 
 ```
-mvn clean install
+mvn clean install && java -jar target/neo-ogm-embedded-bolt.jar
 ```
 
-Run it with:
+This will point the database to `target/neo-store`, drop the database, and then populate it with a few nodes. Bolt is configured to run on `17687`.
+
+
+It can also be pointed at an already running instance of Neo4j using a bolt connection. To build and run this way:
 
 ```
-java -jar target/webservices.jar
+mvn -o clean install && java -jar -Dneo-credentials=<username>:<password> -Dneo-store=bolt://localhost:7687 target/neo-ogm-embedded-bolt.jar
 ```
-
-To run on a port other than 8080:
-
-```
-java -Dport=<port> -jar target/webservices.jar
-```
-where `<port>` is your desired port number.
-
-<br>
-
-Contains one resource out of the box: `/hello-world`. This can be quickly tested by using any REST client ([Postman](https://www.getpostman.com/) works well) and sending a `GET` to `http://localhost:8080/api/hello-world`. You should receive back a plaintext response of `Hello World`.
-
-Additional resources can be added by chaining on a `.register(...)` call to the `ResourceConfig` in the `Application` class.
