@@ -2,11 +2,17 @@ package com.pmobrien.neo;
 
 import com.google.common.base.Strings;
 import com.google.common.base.Suppliers;
+import com.google.common.collect.Maps;
 import com.pmobrien.neo.pojo.NeoUser;
+import java.io.File;
 import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.function.Supplier;
+import org.neo4j.graphdb.factory.GraphDatabaseFactory;
+import org.neo4j.kernel.configuration.BoltConnector;
+import org.neo4j.kernel.configuration.Connector.ConnectorType;
 import org.neo4j.ogm.config.Configuration;
+import org.neo4j.ogm.drivers.embedded.driver.EmbeddedDriver;
 import org.neo4j.ogm.session.Session;
 import org.neo4j.ogm.session.SessionFactory;
 
@@ -31,16 +37,29 @@ public class NeoConnector {
   }
   
   private static SessionFactory initializeSessionFactory() {
-    Configuration configuration = isBolt()
-        ? new Configuration.Builder()
-            .credentials(username(), password())
-            .uri(uri())
-            .build()
-        : new Configuration.Builder()
-            .uri(uri())
-            .build();
-
-    return new SessionFactory(configuration, POJO_PACKAGE);
+    BoltConnector bolt = new BoltConnector("0");
+    
+    return isBolt()
+        ? new SessionFactory(
+            new Configuration.Builder()
+                .credentials(username(), password())
+                .uri(uri())
+                .build(),
+            POJO_PACKAGE
+        )
+        : new SessionFactory(
+            new EmbeddedDriver(
+                new GraphDatabaseFactory()
+                    .newEmbeddedDatabaseBuilder(new File(uri()))
+                    .setConfig(bolt.type, ConnectorType.BOLT.name())
+                    .setConfig(bolt.enabled, "true")
+                    .setConfig(bolt.listen_address, "localhost:17687")
+                    .setConfig(bolt.advertised_address, "localhost:17687")
+                    .setConfig(bolt.encryption_level, BoltConnector.EncryptionLevel.DISABLED.name())
+                    .newGraphDatabase()
+            ),
+            POJO_PACKAGE
+        );
   }
 
   private static String uri() {
@@ -58,10 +77,18 @@ public class NeoConnector {
   }
   
   private static String username() {
+    if(Strings.isNullOrEmpty(System.getProperty(NEO_CREDENTIALS))) {
+      throw new RuntimeException(String.format("'%s' property is required when connecting via bolt.", NEO_CREDENTIALS));
+    }
+    
     return System.getProperty(NEO_CREDENTIALS).split(":")[0];
   }
   
   private static String password() {
+    if(Strings.isNullOrEmpty(System.getProperty(NEO_CREDENTIALS))) {
+      throw new RuntimeException(String.format("'%s' property is required when connecting via bolt.", NEO_CREDENTIALS));
+    }
+    
     return System.getProperty(NEO_CREDENTIALS).split(":")[1];
   }
   
@@ -74,6 +101,8 @@ public class NeoConnector {
     }
     
     Sessions.sessionOperation(session -> {
+      session.query("match (n) detach delete n", Maps.newHashMap());
+      
       session.save(new NeoUser("Patrick"));
       session.save(new NeoUser("Mike"));
       session.save(new NeoUser("Aaron"));
