@@ -84,6 +84,32 @@ public class Main {
       );
     });
     
+    System.out.println();
+    System.out.println();
+    System.out.println();
+    
+    Sessions.sessionOperation(session -> {
+      System.out.println("Expecting only one row here but a list is returned, and none of the parent references are wired up.");
+      printResource(
+          findResource(
+              Lists.newArrayList(
+                  session.query(
+                      StorageResource.class,
+                      new StringBuilder()
+                          .append("MATCH path=(:StorageResource)-[:PARENT_OF*]->(child:StorageResource { uuid: {resourceId} }) ").append(System.lineSeparator())
+                          .append("WITH nodes(path) as column").append(System.lineSeparator())
+                          .append("UNWIND column AS row").append(System.lineSeparator())
+                          .append("RETURN row")
+                          .toString(),
+                      ImmutableMap.<String, Object>builder()
+                          .put("resourceId", file.getUuid())
+                          .build()
+                  )
+              )
+          )
+      );
+    });
+    
     while(true) {}
   }
   
