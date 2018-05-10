@@ -1,17 +1,29 @@
 package com.pmobrien;
 
-import com.google.common.collect.Maps;
 import com.pmobrien.neo.Sessions;
 import com.pmobrien.neo.pojo.NeoEntity;
-import com.pmobrien.neo.pojo.NeoUser;
+import com.pmobrien.neo.pojo.StorageResource;
 
 public class Main {
 
   public static void main(String[] args) {
     Sessions.sessionOperation(session -> {
-      session.query("match (n) detach delete n", Maps.newHashMap());
+      StorageResource base = NeoEntity.create(StorageResource.class)
+          .setName("storage:/base");
       
-      session.save(NeoEntity.create(NeoUser.class).setName("Patrick"));
+      StorageResource top = NeoEntity.create(StorageResource.class)
+          .setName("top")
+          .setParent(base);
+      
+      StorageResource folder = NeoEntity.create(StorageResource.class)
+          .setName("folder")
+          .setParent(top);
+      
+      StorageResource file = NeoEntity.create(StorageResource.class)
+          .setName("file.txt")
+          .setParent(folder);
+      
+      session.save(file);
     });
     
     while(true) {}
