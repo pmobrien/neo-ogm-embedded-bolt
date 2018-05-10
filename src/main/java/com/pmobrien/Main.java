@@ -44,7 +44,28 @@ public class Main {
     System.out.println();
     
     Sessions.sessionOperation(session -> {
-      System.out.println("Loads all StorageResources, but each one is an item in the list, even though they all have parent/children relationships wired up properly.");
+      System.out.println("Matches all parents in the query, but the StorageResource object that is returned does not have these references.");
+      printResource(
+          session.queryForObject(
+              StorageResource.class,
+              new StringBuilder()
+                  .append("MATCH (resource:StorageResource { uuid: {resourceId} })").append(System.lineSeparator())
+                  .append("MATCH (resource)<-[:PARENT_OF*]-(:StorageResource)").append(System.lineSeparator())
+                  .append("RETURN resource")
+                  .toString(),
+              ImmutableMap.<String, Object>builder()
+                  .put("resourceId", file.getUuid())
+                  .build()
+          )
+      );
+    });
+    
+    System.out.println();
+    System.out.println();
+    System.out.println();
+    
+    Sessions.sessionOperation(session -> {
+      System.out.println("Returns all StorageResources, but each one is an item in the list, even though they all have parent/children relationships wired up properly.");
       printResource(
           findResource(
               Lists.newArrayList(
