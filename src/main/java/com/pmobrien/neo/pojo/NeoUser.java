@@ -7,9 +7,7 @@ public class NeoUser extends NeoEntity {
 
   private String name;
   
-  public NeoUser(String name) {
-    this.name = name;
-  }
+  public NeoUser() {}
 
   public String getName() {
     return name;

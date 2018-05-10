@@ -15,8 +15,8 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         
-        <neo4j.version>3.3.0</neo4j.version>
-        <neo4j-ogm.version>3.0.2</neo4j-ogm.version>
+        <neo4j.version>3.1.7</neo4j.version>
+        <neo4j-ogm.version>2.1.5</neo4j-ogm.version>
     </properties>
     
     <dependencies>        
@@ -120,7 +120,7 @@
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <manifestEntries>
-                                        <Main-Class>com.pmobrien.neo.NeoConnector</Main-Class>
+                                        <Main-Class>com.pmobrien.Main</Main-Class>
                                     </manifestEntries>
                                 </transformer>
                             </transformers>
