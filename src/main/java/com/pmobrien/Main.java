@@ -1,16 +1,12 @@
 package com.pmobrien;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 import com.pmobrien.neo.Sessions;
-import com.pmobrien.neo.pojo.NeoEntity;
 import com.pmobrien.neo.pojo.StorageResource;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 import org.neo4j.ogm.annotation.typeconversion.DateString;
 import org.neo4j.ogm.typeconversion.DateStringConverter;
-
 
 public class Main {
 
