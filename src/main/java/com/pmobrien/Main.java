@@ -5,108 +5,41 @@ import com.google.common.collect.Lists;
 import com.pmobrien.neo.Sessions;
 import com.pmobrien.neo.pojo.NeoEntity;
 import com.pmobrien.neo.pojo.StorageResource;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+import org.neo4j.ogm.annotation.typeconversion.DateString;
+import org.neo4j.ogm.typeconversion.DateStringConverter;
+
 
 public class Main {
 
   public static void main(String[] args) {
-    StorageResource base = NeoEntity.create(StorageResource.class)
-        .setName("storage:/base");
-
-    StorageResource top = NeoEntity.create(StorageResource.class)
-        .setName("top")
-        .setParent(base);
-
-    StorageResource folder = NeoEntity.create(StorageResource.class)
-        .setName("folder")
-        .setParent(top);
-
-    StorageResource file = NeoEntity.create(StorageResource.class)
-        .setName("file.txt")
-        .setParent(folder);
-    
     Sessions.sessionOperation(session -> {
-      session.save(file);
-    });
-    
-    System.out.println();
-    System.out.println();
-    System.out.println();
-    System.out.println("Begin queries:");
-    
-    Sessions.sessionOperation(session -> {
-      System.out.println("Only loads one level of relationships so only get one parent here (as expected).");
-      printResource(session.load(StorageResource.class, file.getUuid()));
-    });
-    
-    System.out.println();
-    System.out.println();
-    System.out.println();
-    
-    Sessions.sessionOperation(session -> {
-      System.out.println("Matches all parents in the query, but the StorageResource object that is returned does not have these references.");
-      printResource(
-          session.queryForObject(
-              StorageResource.class,
-              new StringBuilder()
-                  .append("MATCH (resource:StorageResource { uuid: {resourceId} })").append(System.lineSeparator())
-                  .append("MATCH (resource)<-[:PARENT_OF*]-(:StorageResource)").append(System.lineSeparator())
-                  .append("RETURN resource")
-                  .toString(),
-              ImmutableMap.<String, Object>builder()
-                  .put("resourceId", file.getUuid())
-                  .build()
-          )
+      // this works
+      session.queryForObject(
+          StorageResource.class,
+          new StringBuilder()
+              .append("CREATE (resource:StorageResource { uuid: {uuid}, created: {created} })").append(System.lineSeparator())
+              .append("RETURN resource")
+              .toString(),
+          ImmutableMap.<String, Object>builder()
+              .put("uuid", UUID.randomUUID())
+              .put("created", new DateStringConverter(DateString.ISO_8601).toGraphProperty(new Date()))
+              .build()
       );
-    });
-    
-    System.out.println();
-    System.out.println();
-    System.out.println();
-    
-    Sessions.sessionOperation(session -> {
-      System.out.println("Returns all StorageResources, but each one is an item in the list, even though they all have parent/children relationships wired up properly.");
-      printResource(
-          findResource(
-              Lists.newArrayList(
-                  session.query(
-                      StorageResource.class,
-                      new StringBuilder()
-                          .append("MATCH (resource:StorageResource { uuid: {resourceId} })").append(System.lineSeparator())
-                          .append("RETURN (resource)<-[:PARENT_OF*]-(:StorageResource)")
-                          .toString(),
-                      ImmutableMap.<String, Object>builder()
-                          .put("resourceId", file.getUuid())
-                          .build()
-                  )
-              )
-          )
-      );
-    });
-    
-    System.out.println();
-    System.out.println();
-    System.out.println();
-    
-    Sessions.sessionOperation(session -> {
-      System.out.println("Expecting only one row here but a list is returned, and none of the parent references are wired up.");
-      printResource(
-          findResource(
-              Lists.newArrayList(
-                  session.query(
-                      StorageResource.class,
-                      new StringBuilder()
-                          .append("MATCH path=(:StorageResource)-[:PARENT_OF*]->(child:StorageResource { uuid: {resourceId} }) ").append(System.lineSeparator())
-                          .append("WITH nodes(path) as column").append(System.lineSeparator())
-                          .append("UNWIND column AS row").append(System.lineSeparator())
-                          .append("RETURN row")
-                          .toString(),
-                      ImmutableMap.<String, Object>builder()
-                          .put("resourceId", file.getUuid())
-                          .build()
-                  )
-              )
-          )
+      
+      // this does not (but probably should...)
+      session.queryForObject(
+          StorageResource.class,
+          new StringBuilder()
+              .append("CREATE (resource:StorageResource { uuid: {uuid}, created: {created} })").append(System.lineSeparator())
+              .append("RETURN resource")
+              .toString(),
+          ImmutableMap.<String, Object>builder()
+              .put("uuid", UUID.randomUUID())
+              .put("created", new Date())
+              .build()
       );
     });
     

@@ -1,5 +1,6 @@
 package com.pmobrien.neo.pojo;
 
+import java.util.Date;
 import java.util.List;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
@@ -8,6 +9,7 @@ import org.neo4j.ogm.annotation.Relationship;
 public class StorageResource extends NeoEntity {
 
   private String name;
+  private Date created;
   
   @Relationship(type = "PARENT_OF", direction = Relationship.INCOMING)
   private StorageResource parent;
@@ -23,6 +25,15 @@ public class StorageResource extends NeoEntity {
 
   public StorageResource setName(String name) {
     this.name = name;
+    return this;
+  }
+
+  public Date getCreated() {
+    return created;
+  }
+
+  public StorageResource setCreated(Date created) {
+    this.created = created;
     return this;
   }
 
