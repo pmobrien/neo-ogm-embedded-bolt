@@ -49,32 +49,5 @@ public class NeoConnector {
     Components.setDriver(driver);
     
     return new SessionFactory((Configuration)null, POJO_PACKAGE);
-    
-//    GraphDatabaseSettings.BoltConnector bolt = new GraphDatabaseSettings.BoltConnector("0");
-//    
-//    Configuration config = new Configuration();
-////    
-//    config.driverConfiguration()
-//        .setURI(uri())
-//        .setDriverClassName(EmbeddedDriver.class.getName());
-//    
-//    config.set(bolt.type, config);
-    
-//
-//        
-//    
-////    return new SessionFactory(
-////        new EmbeddedDriver(
-////            new GraphDatabaseFactory()
-////                .newEmbeddedDatabaseBuilder(new File(uri()))
-////                .setConfig(bolt.type, ConnectorType.BOLT.name())
-////                .setConfig(bolt.enabled, "true")
-////                .setConfig(bolt.listen_address, "localhost:17688")
-////                .setConfig(bolt.advertised_address, "localhost:17688")
-////                .setConfig(bolt.encryption_level, BoltConnector.EncryptionLevel.DISABLED.name())
-////                .newGraphDatabase()
-////        ),
-////        POJO_PACKAGE
-////    );
   }
 }
