@@ -60,6 +60,22 @@ public class Main {
   
   private static final class Queries {
     
+    /**
+      MATCH (parent:StorageResource { uuid: {parentId} })
+      WHERE NOT (parent)-[:PARENT_OF]->(:StorageResource { name: {childName} })
+      MERGE(parent)-[:PARENT_OF]->(child:Resource:StorageResource { uuid: {childId}, name: {childName}, created: {created}, lastModified: {created}, dir: {dir} })
+      ON CREATE SET child.length = {length}, child.hash = {hash}
+      ON CREATE SET parent.lastModified = {created}
+      FOREACH (
+        x IN CASE
+          WHEN child.dir = false
+          THEN [1]
+        END | SET child :StorageResourceFile
+      )
+      WITH child
+      MATCH path=(child)<-[:PARENT_OF*]-(:StorageResource)
+      RETURN nodes(path)
+     */
     private static final String SAVE_STORAGE_RESOURCE = new StringBuilder()
         .append("MATCH (parent:StorageResource { uuid: {parentId} })").append(System.lineSeparator())
         .append("WHERE NOT (parent)-[:PARENT_OF]->(:StorageResource { name: {childName} })").append(System.lineSeparator())
