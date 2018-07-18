@@ -15,6 +15,9 @@ public class StorageResource extends NeoEntity {
   @Relationship(type = "PARENT_OF", direction = Relationship.OUTGOING)
   private List<StorageResource> children;
   
+  @Relationship(type = "LINKS_TO", direction = Relationship.INCOMING)
+  private List<Share> shares;
+  
   public StorageResource() {}
 
   public String getName() {
@@ -41,6 +44,15 @@ public class StorageResource extends NeoEntity {
 
   public StorageResource setChildren(List<StorageResource> children) {
     this.children = children;
+    return this;
+  }
+
+  public List<Share> getShares() {
+    return shares;
+  }
+
+  public StorageResource setShares(List<Share> shares) {
+    this.shares = shares;
     return this;
   }
 }
