@@ -16,6 +16,8 @@ public class StorageResource extends Resource {
   @Relationship(type = "LINKS_TO", direction = Relationship.INCOMING)
   private List<Share> shares;
   
+  private boolean dir;
+  
   public StorageResource() {}
 
   @Override
@@ -47,6 +49,15 @@ public class StorageResource extends Resource {
 
   public StorageResource setShares(List<Share> shares) {
     this.shares = shares;
+    return this;
+  }
+
+  public boolean isDir() {
+    return dir;
+  }
+
+  public StorageResource setDir(boolean dir) {
+    this.dir = dir;
     return this;
   }
 }

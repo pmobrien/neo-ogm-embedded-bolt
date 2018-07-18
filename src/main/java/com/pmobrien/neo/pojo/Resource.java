@@ -7,6 +7,8 @@ public class Resource extends NeoEntity {
 
   private String name;
   
+  public Resource() {}
+  
   public String getName() {
     return name;
   }
