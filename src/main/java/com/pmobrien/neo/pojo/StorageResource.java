@@ -5,9 +5,7 @@ import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
 @NodeEntity
-public class StorageResource extends NeoEntity {
-
-  private String name;
+public class StorageResource extends Resource {
   
   @Relationship(type = "PARENT_OF", direction = Relationship.INCOMING)
   private StorageResource parent;
@@ -20,13 +18,9 @@ public class StorageResource extends NeoEntity {
   
   public StorageResource() {}
 
-  public String getName() {
-    return name;
-  }
-
+  @Override
   public StorageResource setName(String name) {
-    this.name = name;
-    return this;
+    return (StorageResource)super.setName(name);
   }
 
   public StorageResource getParent() {
