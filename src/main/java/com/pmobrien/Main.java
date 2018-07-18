@@ -1,9 +1,11 @@
 package com.pmobrien;
 
+import com.google.common.collect.Lists;
 import com.pmobrien.neo.Sessions;
 import com.pmobrien.neo.pojo.NeoEntity;
 import com.pmobrien.neo.pojo.StorageResource;
 import com.pmobrien.neo.pojo.util.DateConverter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
@@ -25,19 +27,31 @@ public class Main {
     
     for(int i = 0; i < 100; ++i) {
       POOL.submit(() -> Sessions.sessionOperation(session -> {
-        session.query(
-            Queries.SAVE_STORAGE_RESOURCE,
-            new HashMap<String, Object>() {{
-              put("parentId", base.getUuid());
-              put("childName", "child.txt");
-              put("created", DateConverter.toCypherString(new Date()));
-              put("childId", UUID.randomUUID());
-              put("dir", false);
-              put("encryption", "ENCRYPTION");
-              put("length", 1024L);
-              put("hash", "ABCDEFG1234");
-            }}
+        ArrayList<StorageResource> resources = Lists.newArrayList(
+            session.query(
+                StorageResource.class,
+                Queries.SAVE_STORAGE_RESOURCE,
+                new HashMap<String, Object>() {{
+                  put("parentId", base.getUuid());
+                  put("childName", "child.txt");
+                  put("created", DateConverter.toCypherString(new Date()));
+                  put("childId", UUID.randomUUID());
+                  put("dir", false);
+                  put("encryption", "ENCRYPTION");
+                  put("length", 1024L);
+                  put("hash", "ABCDEFG1234");
+                }}
+            )
         );
+        
+        if(resources.isEmpty()) {
+          // This is what should happen every time, if nothing is returned that means this clause:
+          //    WHERE NOT (parent)-[:PARENT_OF]->(:StorageResource { name: {childName} })
+          // short circuited the query as expected.
+          System.out.println("Could not create StorageResource.");
+        } else {
+          System.out.println("StorageResource created successfully.");
+        }
       }));
     }
     
