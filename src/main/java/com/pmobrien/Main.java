@@ -3,6 +3,10 @@ package com.pmobrien;
 import com.pmobrien.neo.Sessions;
 import com.pmobrien.neo.pojo.NeoEntity;
 import com.pmobrien.neo.pojo.StorageResource;
+import com.pmobrien.neo.pojo.util.DateConverter;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -12,6 +16,7 @@ public class Main {
 
   public static void main(String[] args) {
     StorageResource base = NeoEntity.create(StorageResource.class)
+        .setDir(true)
         .setName("storage:/base");
     
     Sessions.sessionOperation(session -> {
@@ -20,10 +25,42 @@ public class Main {
     
     for(int i = 0; i < 100; ++i) {
       POOL.submit(() -> Sessions.sessionOperation(session -> {
-        session.save(NeoEntity.create(StorageResource.class).setName("filename"));
+        session.query(
+            Queries.SAVE_STORAGE_RESOURCE,
+            new HashMap<String, Object>() {{
+              put("parentId", base.getUuid());
+              put("childName", "child.txt");
+              put("created", DateConverter.toCypherString(new Date()));
+              put("childId", UUID.randomUUID());
+              put("dir", false);
+              put("encryption", "ENCRYPTION");
+              put("length", 1024L);
+              put("hash", "ABCDEFG1234");
+            }}
+        );
       }));
     }
     
     while(true) {}
+  }
+  
+  private static final class Queries {
+    
+    private static final String SAVE_STORAGE_RESOURCE = new StringBuilder()
+        .append("MATCH (parent:StorageResource { uuid: {parentId} })").append(System.lineSeparator())
+        .append("WHERE NOT (parent)-[:PARENT_OF]->(:StorageResource { name: {childName} })").append(System.lineSeparator())
+        .append("MERGE(parent)-[:PARENT_OF]->(child:Resource:StorageResource { uuid: {childId}, name: {childName}, created: {created}, lastModified: {created}, dir: {dir} })").append(System.lineSeparator())
+        .append("ON CREATE SET child.length = {length}, child.hash = {hash}").append(System.lineSeparator())
+        .append("ON CREATE SET parent.lastModified = {created}").append(System.lineSeparator())
+        .append("FOREACH (").append(System.lineSeparator())
+        .append("  x IN CASE").append(System.lineSeparator())
+        .append("    WHEN child.dir = false").append(System.lineSeparator())
+        .append("    THEN [1]").append(System.lineSeparator())
+        .append("  END | SET child :StorageResourceFile").append(System.lineSeparator())
+        .append(")").append(System.lineSeparator())
+        .append("WITH child").append(System.lineSeparator())
+        .append("MATCH path=(child)<-[:PARENT_OF*]-(:StorageResource)").append(System.lineSeparator())
+        .append("RETURN nodes(path)")
+        .toString();
   }
 }
