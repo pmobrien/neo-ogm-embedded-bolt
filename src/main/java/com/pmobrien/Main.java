@@ -17,6 +17,12 @@ public class Main {
   private static final ExecutorService POOL = Executors.newFixedThreadPool(5);
 
   public static void main(String[] args) {
+//    Sessions.sessionOperation(session -> {
+//      session.query("CREATE CONSTRAINT ON (resource:Resource) ASSERT resource.uuid IS UNIQUE", Maps.newHashMap());
+//      session.query("CREATE CONSTRAINT ON (resource:StorageResource) ASSERT resource.uuid IS UNIQUE", Maps.newHashMap());
+//      session.query("CREATE CONSTRAINT ON (resource:StorageResourceFile) ASSERT resource.uuid IS UNIQUE", Maps.newHashMap());
+//    });
+    
     StorageResource base = NeoEntity.create(StorageResource.class)
         .setDir(true)
         .setName("storage:/base");
@@ -59,29 +65,14 @@ public class Main {
   }
   
   private static final class Queries {
-    
-    /**
-      MATCH (parent:StorageResource { uuid: {parentId} })
-      WHERE NOT (parent)-[:PARENT_OF]->(:StorageResource { name: {childName} })
-      MERGE(parent)-[:PARENT_OF]->(child:Resource:StorageResource { uuid: {childId}, name: {childName}, created: {created}, lastModified: {created}, dir: {dir} })
-      ON CREATE SET child.length = {length}, child.hash = {hash}
-      ON CREATE SET parent.lastModified = {created}
-      FOREACH (
-        x IN CASE
-          WHEN child.dir = false
-          THEN [1]
-        END | SET child :StorageResourceFile
-      )
-      WITH child
-      MATCH path=(child)<-[:PARENT_OF*]-(:StorageResource)
-      RETURN nodes(path)
-     */
+
     private static final String SAVE_STORAGE_RESOURCE = new StringBuilder()
         .append("MATCH (parent:StorageResource { uuid: {parentId} })").append(System.lineSeparator())
         .append("WHERE NOT (parent)-[:PARENT_OF]->(:StorageResource { name: {childName} })").append(System.lineSeparator())
-        .append("MERGE(parent)-[:PARENT_OF]->(child:Resource:StorageResource { uuid: {childId}, name: {childName}, created: {created}, lastModified: {created}, dir: {dir} })").append(System.lineSeparator())
-        .append("ON CREATE SET child.length = {length}, child.hash = {hash}").append(System.lineSeparator())
+        .append("MERGE (child:Resource:StorageResource { uuid: {childId} })").append(System.lineSeparator())
+        .append("ON CREATE SET child.name: {childName}, child.created: {created}, child.lastModified: {created}, child.dir: {dir}, child.length = {length}, child.hash = {hash}").append(System.lineSeparator())
         .append("ON CREATE SET parent.lastModified = {created}").append(System.lineSeparator())
+        .append("MERGE (parent)-[:PARENT_OF]->(child)").append(System.lineSeparator())
         .append("FOREACH (").append(System.lineSeparator())
         .append("  x IN CASE").append(System.lineSeparator())
         .append("    WHEN child.dir = false").append(System.lineSeparator())
