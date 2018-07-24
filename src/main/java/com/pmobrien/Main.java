@@ -1,6 +1,7 @@
 package com.pmobrien;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.pmobrien.neo.Sessions;
 import com.pmobrien.neo.pojo.NeoEntity;
 import com.pmobrien.neo.pojo.StorageResource;
@@ -17,11 +18,15 @@ public class Main {
   private static final ExecutorService POOL = Executors.newFixedThreadPool(5);
 
   public static void main(String[] args) {
-//    Sessions.sessionOperation(session -> {
-//      session.query("CREATE CONSTRAINT ON (resource:Resource) ASSERT resource.uuid IS UNIQUE", Maps.newHashMap());
-//      session.query("CREATE CONSTRAINT ON (resource:StorageResource) ASSERT resource.uuid IS UNIQUE", Maps.newHashMap());
-//      session.query("CREATE CONSTRAINT ON (resource:StorageResourceFile) ASSERT resource.uuid IS UNIQUE", Maps.newHashMap());
-//    });
+    Sessions.sessionOperation(session -> {
+      session.query("CREATE CONSTRAINT ON (resource:Resource) ASSERT resource.uuid IS UNIQUE", Maps.newHashMap());
+      session.query("CREATE CONSTRAINT ON (resource:StorageResource) ASSERT resource.uuid IS UNIQUE", Maps.newHashMap());
+      session.query("CREATE CONSTRAINT ON (resource:StorageResourceFile) ASSERT resource.uuid IS UNIQUE", Maps.newHashMap());
+      
+      session.query("CREATE CONSTRAINT ON (resource:Resource) ASSERT resource.parentLockId IS UNIQUE", Maps.newHashMap());
+      session.query("CREATE CONSTRAINT ON (resource:StorageResource) ASSERT resource.parentLockId IS UNIQUE", Maps.newHashMap());
+      session.query("CREATE CONSTRAINT ON (resource:StorageResourceFile) ASSERT resource.parentLockId IS UNIQUE", Maps.newHashMap());
+    });
     
     StorageResource base = NeoEntity.create(StorageResource.class)
         .setDir(true)
@@ -69,8 +74,8 @@ public class Main {
     private static final String SAVE_STORAGE_RESOURCE = new StringBuilder()
         .append("MATCH (parent:StorageResource { uuid: {parentId} })").append(System.lineSeparator())
         .append("WHERE NOT (parent)-[:PARENT_OF]->(:StorageResource { name: {childName} })").append(System.lineSeparator())
-        .append("MERGE (child:Resource:StorageResource { uuid: {childId} })").append(System.lineSeparator())
-        .append("ON CREATE SET child.name: {childName}, child.created: {created}, child.lastModified: {created}, child.dir: {dir}, child.length = {length}, child.hash = {hash}").append(System.lineSeparator())
+        .append("MERGE (child:Resource:StorageResource { parentLockId: parent.uuid + ':' + {childName} })").append(System.lineSeparator())
+        .append("ON CREATE SET child.uuid = {childId}, child.name = {childName}, child.created = {created}, child.lastModified = {created}, child.dir = {dir}, child.length = {length}, child.hash = {hash}").append(System.lineSeparator())
         .append("ON CREATE SET parent.lastModified = {created}").append(System.lineSeparator())
         .append("MERGE (parent)-[:PARENT_OF]->(child)").append(System.lineSeparator())
         .append("FOREACH (").append(System.lineSeparator())
